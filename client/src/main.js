@@ -22,7 +22,8 @@ import {
   faTasks,
   faCalculator,
   faExclamationTriangle,
-  faSignOutAlt
+  faSignOutAlt,
+  faHome
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import CoolLightBox from "vue-cool-lightbox";
@@ -40,6 +41,7 @@ Vue.use(CoolLightBox);
 Vue.config.productionTip = false;
 
 library.add(faSpinner);
+library.add(faHome);
 library.add(faHourglassStart);
 library.add(faCheck);
 library.add(faBars);

@@ -1,5 +1,5 @@
 <template>
-  <div class="LogisticsRequests">
+  <div class="LogisticsRequests p-4">
     <HeaderComponent />
     <TaskTableComponent />
   </div>

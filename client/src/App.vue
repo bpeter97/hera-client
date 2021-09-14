@@ -1,11 +1,11 @@
 <template>
-  <body class="h-100" id="app">
+  <body class="" id="app">
     <div class="container-fluid">
       <div class="row">
         <!-- <SidebarComponent  /> -->
         <div class="main-content col-md-12 p-0">
           <TopnavComponent v-bind:links="links" />
-          <div class="main-content-container container-fluid px-4">
+          <div class="main-content-container container-fluid p-0">
             <keep-alive include="home">
               <router-view />
             </keep-alive>
@@ -32,7 +32,7 @@ export default {
         {
           label: "Home",
           url: "/",
-          icon: "tasks"
+          icon: "home"
         },
         {
           label: "Logistics Requests",

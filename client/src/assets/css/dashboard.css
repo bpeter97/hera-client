@@ -57,6 +57,7 @@ body {
   font-weight: 300;
   color: #5a6169;
   background-color: #fff;
+  min-height: 100vh;
 }
 
 a {
@@ -5988,7 +5989,7 @@ a.text-accent:focus {
 }
 
 .main-content > .main-content-container.container-fluid {
-  min-height: calc(100vh - 7.5rem);
+  height: calc(100vh - 100px);
 }
 
 .main-footer {

@@ -15,6 +15,10 @@
   color: white;
   font-size: 1.2rem;
 }
+
+.navbar-brand {
+  font-size: 24px;
+}
 </style>
 
 <script>
@@ -45,7 +49,15 @@ export default {
   <div class="main-navbar sticky-top bg-white">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Hera</a>
+        <a class="navbar-brand" href="/">
+          <img
+            src="./../../assets/heralogo.png"
+            alt="Hera Logo"
+            class="d-inline-block align-middle mr-1"
+            style="max-width: 25px;"
+          />
+          Hera
+        </a>
         <button
           class="navbar-toggler"
           type="button"
@@ -58,7 +70,7 @@ export default {
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
             <li
               class="nav-item"
               v-for="(link, index) in links"
@@ -90,7 +102,7 @@ export default {
           </ul>
           <ul class="navbar-nav ml-auto border-left flex-row ">
             <li
-              v-if="this.$store.getters.getUsername === null"
+              v-if="this.$store.getters.getUsername === ''"
               class="nav-item dropdown"
             >
               <a

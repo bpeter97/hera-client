@@ -10,6 +10,7 @@ class TaskService {
       const data = res.data;
       return data.map(tasks => ({
         ...tasks,
+        enemyActivity: tasks.emenyActivity === "true" ? "Yes" : "No",
         requestedAt: `${new Date(
           tasks.requestedAt
         ).toLocaleDateString()} ${new Date(
