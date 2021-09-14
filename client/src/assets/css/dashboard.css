@@ -5774,7 +5774,6 @@ a.text-accent:focus {
   max-width: 2.5rem;
 }
 .main-navbar .navbar .navbar-nav .dropdown-menu {
-  position: static;
   right: 0;
   width: 100%;
   border-top-left-radius: 0;

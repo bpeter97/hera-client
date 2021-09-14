@@ -2,18 +2,25 @@
 @import "./TopnavComponent.css";
 
 .discord-button {
-  height: 100%;
   background-color: #5165f6;
+  border-radius: 30px;
+}
+
+.discord-icon {
+  max-width: 20px;
 }
 
 .discord-button:hover {
-  height: 100%;
   background-color: #3f4fcc;
 }
 
 .discord-button span {
   color: white;
   font-size: 1.2rem;
+}
+
+.discord-login-text {
+  font-size: 14px !important;
 }
 
 .navbar-brand {
@@ -100,27 +107,33 @@ export default {
               </a>
             </li>
           </ul>
-          <ul class="navbar-nav ml-auto border-left flex-row ">
+          <ul class="navbar-nav ml-auto flex-row ">
             <li
-              v-if="this.$store.getters.getUsername === ''"
+              v-if="this.$store.getters.isLoggedIn === false"
               class="nav-item dropdown"
             >
               <a
-                class="nav-link text-nowrap px-3 discord-button"
+                class="btn nav-link text-nowrap px-3 discord-button"
                 href="https://discord.com/api/oauth2/authorize?client_id=886771334187728896&redirect_uri=https%3A%2F%2Fhera-tasks.herokuapp.com%2Fapi%2Fdiscord%2Fcallback&response_type=code&scope=identify%20guilds"
                 role="button"
                 aria-haspopup="true"
                 aria-expanded="false"
               >
                 <img
-                  class="user-avatar mr-2 mt-1"
+                  class="discord-icon mr-2 mt-1"
                   src="./../../assets/images/discord-logo-white.png"
                   alt="User Avatar"
                 />
-                <span class="d-none d-md-inline-block align-middle">Login</span>
+                <span
+                  class="d-none d-md-inline-block align-middle discord-login-text"
+                  >Login</span
+                >
               </a>
             </li>
-            <li v-else class="nav-item dropdown show">
+            <li
+              v-if="this.$store.getters.isLoggedIn === true"
+              class="nav-item dropdown show"
+            >
               <a
                 class="nav-link dropdown-toggle text-nowrap px-3"
                 href="#"
@@ -157,6 +170,7 @@ export default {
                 </a>
               </div>
             </li>
+            <li v-else class="nav-item"></li>
           </ul>
         </div>
       </div>

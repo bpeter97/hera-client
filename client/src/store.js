@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     auth: "",
+    loggedIn: false,
     user: {
       info: {},
       guilds: {}
@@ -18,6 +19,7 @@ export default new Vuex.Store({
       state.auth = data;
     },
     setUserData(state, data) {
+      state.loggedIn = true;
       state.user = data;
     },
     increment(state) {
@@ -42,6 +44,9 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    isLoggedIn: state => {
+      return state.loggedIn;
+    },
     getAuth: state => {
       return state.auth;
     },
