@@ -31,7 +31,7 @@ import "vue-cool-lightbox/dist/vue-cool-lightbox.min.css";
 Vue.use(
   new VueSocketIO({
     debug: true,
-    connection: io("http://localhost:5000")
+    connection: io("https://hera-tasks.herokuapp.com/")
   })
 );
 

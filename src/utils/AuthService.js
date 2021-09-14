@@ -11,7 +11,7 @@ class AuthService {
       };
 
       const res = await axios.get(
-        "http://localhost:5000/api/discord/user/",
+        "https://hera-tasks.herokuapp.com//api/discord/user/",
         options
       );
       const data = res.data;
@@ -30,7 +30,7 @@ class AuthService {
       };
 
       const res = await axios.get(
-        "http://localhost:5000/api/discord/user/logout",
+        "https://hera-tasks.herokuapp.com/api/discord/user/logout",
         options
       );
       const data = res.data;

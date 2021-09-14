@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:5000/api/tasks/";
+const url = "https://hera-tasks.herokuapp.com/api/tasks/";
 
 class TaskService {
   // Get all tasks
