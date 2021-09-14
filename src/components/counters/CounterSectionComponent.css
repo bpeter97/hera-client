@@ -1,0 +1,9 @@
+.stats-small__label {
+    color: white !important;
+    font-weight: bolder !important;
+}
+
+.count {
+    color: rgb(61, 61, 61) !important;
+    font-size: 3rem !important;
+}

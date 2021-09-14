@@ -1,0 +1,35 @@
+.fa-icon {
+	font-size: 14px;
+}
+
+.nav-footer {
+	position: absolute;
+	bottom: 0;
+	font-style: italic;
+	font-size: 1vw;
+}
+
+@media screen and (min-width: 901px) {
+	.nav-footer {
+		font-size: 14px;
+	}
+}
+
+/* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
+@media screen and (max-width: 900px) {
+	.nav-footer {
+		font-size: 12px;
+	}
+}
+
+#logo-title {
+	font-size: 1.5rem;
+}
+.nav-link.disabled .label {
+	text-decoration: line-through;
+}
+
+.nav-link.disabled span.badge {
+	margin-left: 10px;
+	text-decoration: none !important;
+}

@@ -1,0 +1,48 @@
+.nav-tabs .nav-link,
+.nav-tabs .nav-item.show .nav-link {
+  background-color: #015075 !important;
+  border-color: #015075 !important;
+  color: #fdfdfd !important;
+  font-size: 1.2rem;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+  background-color: #008ecf !important;
+  border-color: #008ecf !important;
+  color: #ffffff !important;
+}
+
+.nav-fill .nav-item .nav-link,
+.nav-justified .nav-item .nav-link {
+  width: auto !important;
+}
+
+.nav-tabs .nav-link:hover,
+.nav-tabs .nav-link:focus,
+.nav-tabs .nav-link:active {
+  isolation: auto !important;
+}
+
+.nav.nav-tabs.nav-fill .nav-item {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.nav.nav-tabs.nav-fill .nav-item .nav-link {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.nav.nav-tabs.nav-fill .nav-item a {
+  box-shadow: 0 2px 0 rgb(90 97 105 / 11%), 0 4px 8px rgb(90 97 105 / 12%),
+    0 10px 10px rgb(90 97 105 / 6%), 0 7px 70px rgb(90 97 105 / 10%);
+}
+
+.alert-primary-new {
+  background-color: #0066ff;
+  border-radius: 10px !important;
+  color: white;
+  box-shadow: 0 2px 0 rgb(90 97 105 / 11%), 0 4px 8px rgb(90 97 105 / 12%),
+    0 10px 10px rgb(90 97 105 / 6%), 0 7px 70px rgb(90 97 105 / 10%);
+}
