@@ -1,31 +1,5 @@
 <style scoped>
 @import "./TopnavComponent.css";
-
-.discord-button {
-  background-color: #5165f6;
-  border-radius: 30px;
-}
-
-.discord-icon {
-  max-width: 20px;
-}
-
-.discord-button:hover {
-  background-color: #3f4fcc;
-}
-
-.discord-button span {
-  color: white;
-  font-size: 1.2rem;
-}
-
-.discord-login-text {
-  font-size: 14px !important;
-}
-
-.navbar-brand {
-  font-size: 24px;
-}
 </style>
 
 <script>

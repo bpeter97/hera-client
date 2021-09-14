@@ -58,13 +58,17 @@ export default {
           break;
         }
         case "PATCH": {
-          this.tasks = this.tasks.map(task => {
-            if (task._id === t.task._id) {
-              return t.task;
-            } else {
-              return task;
+          let oldIndex = this.tasks.findIndex(task => task._id === t.task._id);
+          let updateProps = Object.getOwnPropertyNames(t.task);
+
+          for (var i = 0; i < updateProps.length; i++) {
+            let propName = updateProps[i];
+
+            if (t.task[propName] !== this.tasks[oldIndex].propName) {
+              this.tasks[oldIndex].propName = t.task[propName];
             }
-          });
+          }
+
           this.calculateCounters();
           this.addChangeAlert({
             message: `Request: 1STRL-${t.task.taskId}(${t.task.status}) has been updated!`,
