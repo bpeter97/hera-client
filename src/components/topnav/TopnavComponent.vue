@@ -23,7 +23,9 @@ import AuthService from "./../../utils/AuthService";
 export default {
   name: "TopnavComponent",
   components: {},
-  props: {},
+  props: {
+    links: Array
+  },
   methods: {
     async getUserInfo() {
       this.userInfo = await AuthService.getUserInfo(this.$route.query.d);
@@ -68,34 +70,33 @@ export default {
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
+            <li
+              class="nav-item"
+              v-for="(link, index) in links"
+              v-bind:item="link"
+              v-bind:index="index"
+              v-bind:key="link.label"
+            >
               <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
+                :href="link.url"
+                v-bind:class="
+                  link.disabled
+                    ? 'nav-link disabled'
+                    : link.url === currentUrl
+                    ? 'nav-link active'
+                    : 'nav-link'
+                "
+                :aria-disabled="link.disabled"
               >
-                Dropdown
+                <font-awesome-icon :icon="link.icon" class="fa-icon mr-3" />
+                <span class="label">{{ link.label }}</span>
+                <b-badge
+                  variant="primary"
+                  v-bind:class="link.disabled ? 'd-inline ml-2' : 'd-none'"
+                >
+                  Coming Soon!</b-badge
+                >
               </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled">Disabled</a>
             </li>
           </ul>
           <ul class="navbar-nav ml-auto border-left flex-row ">
@@ -105,7 +106,7 @@ export default {
             >
               <a
                 class="nav-link text-nowrap px-3 discord-button"
-                href="https://discord.com/api/oauth2/authorize?client_id=886771334187728896&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fapi%2Fdiscord%2Fcallback&response_type=code&scope=identify%20email%20guilds"
+                href="https://discord.com/api/oauth2/authorize?client_id=886771334187728896&redirect_uri=https%3A%2F%2Fhera-tasks.herokuapp.com%2Fapi%2Fdiscord%2Fcallback&response_type=code&scope=identify%20guilds"
                 role="button"
                 aria-haspopup="true"
                 aria-expanded="false"

@@ -40,20 +40,8 @@ export default {
           icon: "tasks"
         },
         {
-          label: "Logistics Calculator",
-          url: "/calculator",
-          icon: "calculator",
-          disabled: true
-        },
-        {
           label: "Artillery Map",
           url: "/artillery-map",
-          icon: "map",
-          disabled: true
-        },
-        {
-          label: "Planning Table",
-          url: "/planning-table",
           icon: "map",
           disabled: true
         }

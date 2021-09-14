@@ -11,7 +11,7 @@ class AuthService {
       };
 
       const res = await axios.get(
-        "https://hera-tasks.herokuapp.com//api/discord/user/",
+        "https://hera-tasks.herokuapp.com/api/discord/user/",
         options
       );
       const data = res.data;
