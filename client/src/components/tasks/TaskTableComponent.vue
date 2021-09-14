@@ -284,6 +284,10 @@ export default {
             :items="getTasks('Accepted')"
             :fields="acceptedItemFields"
           >
+            <template #cell(enemyActivity)="data">
+              {{ data.value ? "Yes" : "No" }}
+            </template>
+
             <template #cell(details)="row">
               <b-button
                 size="sm"
@@ -307,6 +311,10 @@ export default {
             :items="getTasks('Completed')"
             :fields="acceptedItemFields"
           >
+            <template #cell(enemyActivity)="data">
+              {{ data.value ? "Yes" : "No" }}
+            </template>
+
             <template #cell(details)="row">
               <b-button
                 size="sm"
