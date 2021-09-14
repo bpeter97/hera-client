@@ -10,7 +10,6 @@ class TaskService {
       const data = res.data;
       return data.map(tasks => ({
         ...tasks,
-        enemyActivity: tasks.emenyActivity === "true" ? "Yes" : "No",
         requestedAt: `${new Date(
           tasks.requestedAt
         ).toLocaleDateString()} ${new Date(
@@ -22,9 +21,9 @@ class TaskService {
     }
   }
 
-  static updateTask(task) {
+  static async updateTask(task) {
     let patchUrl = `${url}${task._id}`;
-    return axios.patch(patchUrl, task);
+    return await axios.patch(patchUrl, task);
   }
 
   // Create Task

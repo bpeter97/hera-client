@@ -256,6 +256,10 @@ export default {
             :items="getTasks('Pending')"
             :fields="pendingItemFields"
           >
+            <template #cell(enemyActivity)="data">
+              {{ data.value ? "Yes" : "No" }}
+            </template>
+
             <template #cell(details)="row">
               <b-button
                 size="sm"
