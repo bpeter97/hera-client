@@ -8,7 +8,7 @@
 
 <script>
 // @ is an alias to /src
-import AuthService from "./../../utils/AuthService";
+import AuthService from "./../utils/AuthService";
 import HeaderComponent from "@/components/header/HeaderComponent.vue";
 
 export default {

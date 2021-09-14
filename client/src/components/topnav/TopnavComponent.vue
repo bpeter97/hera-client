@@ -18,8 +18,6 @@
 </style>
 
 <script>
-import AuthService from "./../../utils/AuthService";
-
 export default {
   name: "TopnavComponent",
   components: {},
@@ -27,11 +25,6 @@ export default {
     links: Array
   },
   methods: {
-    async getUserInfo() {
-      this.userInfo = await AuthService.getUserInfo(this.$route.query.d);
-      this.$store.dispatch("auth", this.$route.query.d);
-      this.$store.dispatch("login", this.userInfo);
-    },
     logout() {
       this.$store.dispatch("logout");
     }
@@ -42,11 +35,7 @@ export default {
     };
   },
   mounted() {},
-  created() {
-    if (this.$route.query.d) {
-      this.getUserInfo();
-    }
-  },
+  created() {},
   computed: {},
   watch: {}
 };
