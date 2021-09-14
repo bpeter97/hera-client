@@ -10,7 +10,10 @@ class AuthService {
         }
       };
 
-      const res = await axios.get("api/discord/user/", options);
+      const res = await axios.get(
+        "https://hera-tasks.herokuapp.com/api/discord/user/",
+        options
+      );
       const data = res.data;
       return data;
     } catch (err) {

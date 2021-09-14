@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server/server.js",
+    "build": "cd client && npm run build",
     "dev": "nodemon server/server.js"
   },
   "author": "Critinator & Hartley",
