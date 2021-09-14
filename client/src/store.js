@@ -26,7 +26,9 @@ export default new Vuex.Store({
       state.count++;
     },
     logout: state => {
-      (state.auth = ""), (state.user = {});
+      state.loggedIn = false;
+      state.auth = "";
+      state.user = {};
     }
   },
   actions: {
