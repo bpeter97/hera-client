@@ -8,6 +8,7 @@
 
 <script>
 // @ is an alias to /src
+import AuthService from "./../../utils/AuthService";
 import HeaderComponent from "@/components/header/HeaderComponent.vue";
 
 export default {
@@ -16,10 +17,17 @@ export default {
     HeaderComponent
   },
   methods: {
-    increment() {
-      this.$store.dispatch("increment");
+    async getUserInfo() {
+      this.userInfo = await AuthService.getUserInfo(this.$route.query.d);
+      this.$store.dispatch("auth", this.$route.query.d);
+      this.$store.dispatch("login", this.userInfo);
     }
   },
-  mounted() {}
+  mounted() {},
+  created() {
+    if (this.$route.query.d) {
+      this.getUserInfo();
+    }
+  }
 };
 </script>
