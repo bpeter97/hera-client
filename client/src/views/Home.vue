@@ -18,9 +18,9 @@ export default {
   },
   methods: {
     async getUserInfo() {
-      this.userInfo = await AuthService.getUserInfo(this.$route.query.d);
+      let userInfo = await AuthService.getUserInfo(this.$route.query.d);
       this.$store.dispatch("auth", this.$route.query.d);
-      this.$store.dispatch("login", this.userInfo);
+      this.$store.dispatch("login", userInfo);
     }
   },
   mounted() {},
