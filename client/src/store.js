@@ -12,6 +12,9 @@ export default new Vuex.Store({
       info: {},
       guilds: {}
     },
+    items: {
+      list: []
+    },
     count: 0
   },
   mutations: {
@@ -21,6 +24,9 @@ export default new Vuex.Store({
     setUserData(state, data) {
       state.loggedIn = true;
       state.user = data;
+    },
+    setItemList(state, list) {
+      state.items.list = list;
     },
     increment(state) {
       state.count++;
@@ -41,8 +47,8 @@ export default new Vuex.Store({
     logout({ commit }) {
       commit("logout");
     },
-    increment({ commit }) {
-      commit("increment");
+    setItemList({ commit }, data) {
+      commit("setItemList", data);
     }
   },
   getters: {
@@ -61,6 +67,9 @@ export default new Vuex.Store({
     },
     getUserAvatar: state => {
       return `https://cdn.discordapp.com/avatars/${state.user.info.id}/${state.user.info.avatar}.png`;
+    },
+    getItemList: state => {
+      return state.items.list;
     }
   },
   plugins: [createPersistedState()]

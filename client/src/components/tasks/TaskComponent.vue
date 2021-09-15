@@ -62,6 +62,26 @@ export default {
     }
   },
   methods: {
+    getIcon(item) {
+      let found = this.$store.getters.getItemList.find(i => i.name === item);
+      var img = "";
+      try {
+        img = require(`./../../assets/images/icons/${found.icon}-dark.png`);
+      } catch (err) {
+        return;
+      }
+      return img;
+    },
+    findIcon(item) {
+      let found = this.$store.getters.getItemList.find(
+        i => i.name + "-dark" === item
+      );
+      if (found) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     checkVariant(status) {
       let variant = "";
 
@@ -148,7 +168,8 @@ export default {
     }
   },
   props: {
-    task: Object
+    task: Object,
+    craftedItems: Array
   }
 };
 </script>
@@ -366,12 +387,15 @@ export default {
             {{ this.status_value }}% Complete
           </div>
         </div>
-        <b-table
-          striped
-          hover
-          sticky-header="450px"
-          :items="task.items"
-        ></b-table>
+        <b-table striped hover sticky-header="450px" :items="task.items">
+          <template #cell(item)="data">
+            <img
+              class="image mr-2"
+              v-bind:src="getIcon(data.value)"
+              :height="30"
+            />{{ data.value }}
+          </template>
+        </b-table>
         <div class="row">
           <div class="col-12">
             <div class="h5">Required Materials: Coming soon!</div>

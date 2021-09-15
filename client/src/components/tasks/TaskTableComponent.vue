@@ -218,9 +218,7 @@ export default {
       this.calculateCounters();
     });
   },
-  props: {
-    msg: String
-  }
+  props: {}
 };
 </script>
 

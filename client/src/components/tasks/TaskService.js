@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const url = "https://hera-tasks.herokuapp.com/api/tasks/";
+const url = "https://hera-tasks.herokuapp.com/api";
 
 class TaskService {
   // Get all tasks
   static async getTasks() {
     try {
-      const res = await axios.get(url);
+      const res = await axios.get(`${url}/tasks/`);
       const data = res.data;
       return data.map(tasks => ({
         ...tasks,
@@ -21,8 +21,17 @@ class TaskService {
     }
   }
 
+  static async getItems() {
+    try {
+      const res = await axios.get(`${url}/items/`);
+      return res.data.map(item => item);
+    } catch (err) {
+      return err;
+    }
+  }
+
   static async updateTask(task) {
-    let patchUrl = `${url}${task._id}`;
+    let patchUrl = `${url}/tasks/${task._id}`;
     return await axios.patch(patchUrl, task);
   }
 
