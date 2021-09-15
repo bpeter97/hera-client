@@ -6,14 +6,13 @@
 import TaskService from "./TaskService";
 import TaskComponent from "./TaskComponent.vue";
 import CounterSectionComponent from "@/components/counters/CounterSectionComponent.vue";
-import AlertComponent from "@/components/alerts/AlertComponent.vue";
+// import AlertComponent from "@/components/alerts/AlertComponent.vue";
 const { taskStatus } = require("../../utils/enums");
 
 export default {
   name: "TaskTableComponent",
   components: {
     TaskComponent,
-    AlertComponent,
     CounterSectionComponent
   },
   mounted() {
@@ -227,7 +226,7 @@ export default {
     <p class="error" v-if="error">{{ error }}</p>
 
     <CounterSectionComponent v-bind:counters="this.counters" />
-    <AlertComponent />
+    <!-- <AlertComponent /> -->
 
     <div class="div">
       <b-alert

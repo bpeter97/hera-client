@@ -5,6 +5,24 @@
 .task-dropdown ul li:focus {
   background-color: rgb(0, 153, 255);
 }
+
+.required-mats-text {
+  font-size: 1.5rem;
+}
+
+.danger-task-enemy {
+  color: #ffffff;
+  background-color: #ff00009c !important;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 0.46875rem 2.1875rem rgb(90 97 105 / 10%),
+    0 0.9375rem 1.40625rem rgb(90 97 105 / 10%),
+    0 0.25rem 0.53125rem rgb(90 97 105 / 12%),
+    0 0.125rem 0.1875rem rgb(90 97 105 / 10%);
+  box-shadow: 0 0.46875rem 2.1875rem rgb(90 97 105 / 10%),
+    0 0.9375rem 1.40625rem rgb(90 97 105 / 10%),
+    0 0.25rem 0.53125rem rgb(90 97 105 / 12%),
+    0 0.125rem 0.1875rem rgb(90 97 105 / 10%);
+}
 </style>
 
 <script>
@@ -21,6 +39,10 @@ export default {
   },
   data() {
     return {
+      bmats: 0,
+      hmats: 0,
+      emats: 0,
+      rmats: 0,
       delete_modal: false,
       status_value: 0,
       status_value_style: "width: 0%",
@@ -31,6 +53,18 @@ export default {
     };
   },
   created() {
+    this.task.items.forEach(item => {
+      // find the item in the list of items
+      let foundItem = this.$store.getters.getItemList.find(
+        i => i.name === item.item
+      );
+
+      this.bmats = this.bmats + foundItem.bmatCost * item.quantity;
+      this.emats = this.emats + foundItem.ematCost * item.quantity;
+      this.hmats = this.hmats + foundItem.hmatCost * item.quantity;
+      this.rmats = this.rmats + foundItem.rmatCost * item.quantity;
+    });
+
     switch (this.task.logiStatus) {
       case logiStatus.PENDING:
         this.status_value = 0;
@@ -168,8 +202,7 @@ export default {
     }
   },
   props: {
-    task: Object,
-    craftedItems: Array
+    task: Object
   }
 };
 </script>
@@ -305,6 +338,20 @@ export default {
               </div>
             </div>
           </div>
+          <div class="row" v-if="task.enemyActivity === true">
+            <div class="col-12">
+              <b-alert show class="danger-task-enemy text-center">
+                <font-awesome-icon
+                  icon="exclamation-triangle"
+                  class="fa-icon mr-5"/>
+                <span class="font-weight-bold">Warning!</span> There is enemy
+                activity at the delivery location!
+                <font-awesome-icon
+                  icon="exclamation-triangle"
+                  class="fa-icon ml-5"
+              /></b-alert>
+            </div>
+          </div>
           <div class="row">
             <div class="col-6">
               <HeaderComponent v-bind:card="true" :requestId="task.taskId" />
@@ -396,9 +443,70 @@ export default {
             />{{ data.value }}
           </template>
         </b-table>
-        <div class="row">
-          <div class="col-12">
-            <div class="h5">Required Materials: Coming soon!</div>
+        <div class="d-flex flex-row align-content-center">
+          <div v-if="this.bmats > 0" class="col text-center">
+            <b-card
+              title="Basic Materials Required"
+              header-tag="header"
+              footer-tag="footer"
+            >
+              <img
+                class="image mr-2"
+                v-bind:src="
+                  require('./../../assets/images/icons/Basic_Materials-largedark.png')
+                "
+                :height="50"
+              />
+              <b-card-text class="pt-3 required-mats-text"
+                >{{ this.bmats }} units /
+                {{ this.bmats / 100 }} crate(s)</b-card-text
+              >
+            </b-card>
+          </div>
+          <div v-if="this.emats > 0" class="col text-center">
+            <b-card title="Explosive Materials Required">
+              <img
+                class="image mr-2"
+                v-bind:src="
+                  require('./../../assets/images/icons/Explosive_Materials-largedark.png')
+                "
+                :height="50"
+              />
+              <b-card-text class="pt-3 required-mats-text"
+                >{{ this.emats }} units /
+                {{ this.emats / 20 }} crate(s)</b-card-text
+              >
+            </b-card>
+          </div>
+          <div v-if="this.hmats > 0" class="col text-center">
+            <b-card title="Heavy Explosive Materials Required">
+              <img
+                class="image mr-2"
+                v-bind:src="
+                  require('./../../assets/images/icons/HeavyExplosiveMaterialIcon-largedark.png')
+                "
+                :height="50"
+              />
+              <b-card-text class="pt-3 required-mats-text"
+                >{{ this.hmats }} units /
+                {{ this.hmats / 20 }} crate(s)</b-card-text
+              >
+            </b-card>
+          </div>
+          <div v-if="this.rmats > 0" class="col text-center">
+            <b-card title="Refined Materials Required">
+              <img
+                class="image mr-2"
+                v-bind:src="
+                  require('./../../assets/images/icons/Refined_Materials-largedark.png')
+                "
+                :height="50"
+              />
+              <b-card-text class="pt-3 required-mats-text"
+                >{{ this.rmats }} units /
+                {{ this.rmats / 20 }} crate(s)</b-card-text
+              >
+            </b-card>
           </div>
         </div>
       </div>
