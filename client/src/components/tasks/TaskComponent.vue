@@ -162,7 +162,9 @@ export default {
             <div class="card-post__author d-flex">
               <div class="d-flex flex-column justify-content-center ml-3">
                 <span class="card-post__author-name">Requested By:</span>
-                <span class="card-post__author-name">Critinator</span>
+                <span class="card-post__author-name">{{
+                  this.task.requestedBy
+                }}</span>
                 <small class="text-muted">{{ this.task.requestedAt }}</small>
               </div>
             </div>

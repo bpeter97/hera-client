@@ -61,7 +61,7 @@
 
         <hr class="my-4" />
         <p class="pt-4">
-          For Foxhole version 0.42 <br />
+          For Foxhole version 0.45.10.4 <br />
           Created by Hartley and Critinator <br />
           Last updated: 9/11/2021
         </p>

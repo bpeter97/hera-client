@@ -1,5 +1,3 @@
-// const dbcon = require("../db/connection");
-const mongodb = require("mongodb");
 const _ = require("lodash");
 const Task = require("../../models/Task");
 const ObjectID = require("mongoose").Types.ObjectId;
@@ -24,25 +22,36 @@ exports.getTasks = (req, res) => {
 exports.getTask = async (req, res) => {
 	let errors = {};
 
-	let id = parseInt(req.params.id);
+	if (!ObjectID.isValid(req.params.id)) {
+		let id = parseInt(req.params.id);
 
-	if (typeof id === "string" || id instanceof String) {
-		errors.task = "There was no task found";
-		return res.status(400).json(errors);
-	}
-	if (!Number.isInteger(id)) {
-		errors.task = "There was no task found";
-		return res.status(400).json(errors);
-	}
+		if (typeof id === "string" || id instanceof String) {
+			errors.task = "There was no task found";
+			return res.status(400).json(errors);
+		}
+		if (!Number.isInteger(id)) {
+			errors.task = "There was no task found";
+			return res.status(400).json(errors);
+		}
 
-	Task.findOne({ taskId: id })
-		.then((task) => {
-			if (!task) {
-				return res.json({ error: "There was no task found" });
-			}
-			res.send(task);
-		})
-		.catch((e) => res.status(404).json(e));
+		Task.findOne({ taskId: id })
+			.then((task) => {
+				if (!task) {
+					return res.json({ error: "There was no task found" });
+				}
+				res.send(task);
+			})
+			.catch((e) => res.status(404).json(e));
+	} else {
+		Task.findById(req.params.id)
+			.then((task) => {
+				if (!task) {
+					return res.json({ error: "There was no task found" });
+				}
+				res.send(task);
+			})
+			.catch((e) => res.status(404).json(e));
+	}
 };
 
 // @route   POST api/tasks/
@@ -91,6 +100,7 @@ exports.patchTask = async (req, res) => {
 	}
 
 	let update = {
+		requestedBy: req.body.requestedBy,
 		requestedAt: req.body.requestedAt,
 		status: req.body.status,
 		logiStatus: req.body.logiStatus,
