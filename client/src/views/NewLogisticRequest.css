@@ -1,0 +1,27 @@
+.page-jumbotron {
+  border-radius: 0%;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)),
+    center / contain no-repeat url("./../assets/images/requestbackground.jpg");
+  background-size: cover;
+  height: 200px;
+  margin-bottom: 0px !important;
+}
+
+#fieldset-horizontal {
+  margin: 0px !important;
+}
+
+.page-jumbotron .display-3 {
+  color: white;
+}
+
+.facility-button.active {
+  background-color: rgb(0, 119, 255) !important;
+}
+.facility-button {
+  background-color: rgb(0, 74, 158) !important;
+  padding: 5px 20px;
+}
+.input-group-text {
+  color: black;
+}

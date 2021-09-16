@@ -8,7 +8,8 @@ export default {
   components: {},
   props: {
     card: Boolean,
-    requestId: Number
+    requestId: Number,
+    label: String
   },
   data() {
     return {
@@ -16,27 +17,28 @@ export default {
     };
   },
   mounted() {
-    let currentUrl = window.location.pathname;
-    switch (currentUrl) {
+    if (this.label !== "") {
+      this.pageTitle = this.label;
+    } else {
+      switch (window.location.pathname) {
         case "/":
-        this.pageTitle = "Home";
-        break;
-      case "/logistics-requests":
-        this.pageTitle = "Logistics Requests";
-        break;
-      case "/calculator":
-        this.pageTitle = "Logistics Calculator";
-        break;
-      case "/artillery-map":
-        this.pageTitle = "Artillery Map";
-        break;
-      default:
-        this.pageTitle = "Add a new page title";
+          this.pageTitle = "Home";
+          break;
+        case "/logistics-requests":
+          this.pageTitle = "Logistics Requests";
+          break;
+        case "/calculator":
+          this.pageTitle = "Logistics Calculator";
+          break;
+        case "/artillery-map":
+          this.pageTitle = "Artillery Map";
+          break;
+        default:
+          this.pageTitle = "Add a new page title";
+      }
     }
-
   },
-  created() {
-  },
+  created() {},
   computed: {},
   methods: {},
   watch: {}
@@ -50,7 +52,7 @@ export default {
         card ? "Request #" : "Dashboard"
       }}</span>
       <h3 class="page-title">
-        {{ card ? `1STRL-${requestId}` : pageTitle }}
+        {{ card ? `1STRL-${requestId}` : this.pageTitle }}
       </h3>
     </div>
   </div>

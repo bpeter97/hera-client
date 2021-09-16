@@ -17,6 +17,11 @@ export default new Router({
       path: "/logistics-requests",
       name: "Logistic Requests",
       component: () => import("./views/LogisticRequests.vue")
+    },
+    {
+      path: "/logistics-requests/new",
+      name: "New Logistics Request",
+      component: () => import("./views/NewLogisticRequest.vue")
     }
   ]
 });

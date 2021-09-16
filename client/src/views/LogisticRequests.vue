@@ -1,6 +1,6 @@
 <template>
-  <div class="LogisticsRequests p-4">
-    <HeaderComponent />
+  <div class="LogisticsRequests pt-1 pl-4 pr-4 pb-4">
+    <HeaderComponent label="Logistics Requests" />
     <TaskTableComponent />
   </div>
 </template>

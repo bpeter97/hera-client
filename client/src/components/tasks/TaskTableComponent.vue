@@ -210,6 +210,9 @@ export default {
           this.counters.totalDelivered += new Number(item.quantity);
         });
       });
+    },
+    createRequest() {
+      this.$router.push("/logistics-requests/new");
     }
   },
   created() {
@@ -223,7 +226,17 @@ export default {
 
 <template>
   <div class="task-tables-component">
-    <p class="error" v-if="error">{{ error }}</p>
+    <!-- <div class="text-left mb-3" v-if="this.$store.getters.isLoggedIn"> -->
+    <div class="text-left mb-3">
+      <b-button
+        size="lg"
+        class=""
+        @click="this.createRequest"
+        variant="primary"
+      >
+        Create Request
+      </b-button>
+    </div>
 
     <CounterSectionComponent v-bind:counters="this.counters" />
     <!-- <AlertComponent /> -->

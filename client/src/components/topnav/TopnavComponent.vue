@@ -38,7 +38,9 @@ export default {
             class="d-inline-block align-middle mr-1"
             style="max-width: 25px;"
           />
-          Hera
+          <span class="navbar-title align-middle">
+            Hera
+          </span>
         </a>
         <button
           class="navbar-toggler"
@@ -52,7 +54,7 @@ export default {
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+          <ul class="navbar-nav ml-auto mb-2 mb-lg-0" id="header-nav">
             <li
               class="nav-item"
               v-for="(link, index) in links"
@@ -62,13 +64,7 @@ export default {
             >
               <a
                 :href="link.url"
-                v-bind:class="
-                  link.disabled
-                    ? 'nav-link disabled'
-                    : link.url === currentUrl
-                    ? 'nav-link active'
-                    : 'nav-link'
-                "
+                v-bind:class="link.disabled ? 'nav-link disabled' : 'nav-link'"
                 :aria-disabled="link.disabled"
               >
                 <font-awesome-icon :icon="link.icon" class="fa-icon mr-3" />
