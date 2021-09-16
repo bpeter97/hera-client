@@ -162,7 +162,7 @@ export default {
         "error",
         "You must be logged in to review logistic requests."
       );
-      this.$router.push("/");
+      this.$router.push("/logistics-requests");
     }
     if (this.$store.getters.getItemList === null) {
       this.getAllItems();
