@@ -98,7 +98,7 @@ export default {
       };
 
       TaskService.insertTask(newRequest).then(() => {
-        this.$router.push("/");
+        this.$router.push("/logistics-requests");
       });
     },
     checkReady() {
@@ -162,7 +162,7 @@ export default {
         "error",
         "You must be logged in to review logistic requests."
       );
-      this.$router.push("/logistics-requests");
+      this.$router.push("/");
     }
     if (this.$store.getters.getItemList === null) {
       this.getAllItems();
