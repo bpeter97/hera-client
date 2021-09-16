@@ -6,7 +6,7 @@ class AuthService {
     try {
       let options = {
         headers: {
-          Authorization: id
+          authorization: id
         }
       };
 
@@ -25,7 +25,7 @@ class AuthService {
     try {
       let options = {
         headers: {
-          Authorization: id
+          authorization: id
         }
       };
 
