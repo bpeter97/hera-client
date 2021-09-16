@@ -1,16 +1,15 @@
 .card-post__image {
-	background-image: url("./../../assets/images/regions/Map_Farranac_Coast.png");
-	background-size: 50%;
-	background-size: 3.2em;
-	background-size: 12px;
-	background-size: auto;
+  background-size: 50%;
+  background-size: 3.2em;
+  background-size: 12px;
+  background-size: auto;
 }
 
 .progress-sm {
-	height: 20px !important;
+  height: 20px !important;
 }
 
 .assigned-members {
-	font-size: 1.2rem;
-	font-style: italic;
+  font-size: 1.2rem;
+  font-style: italic;
 }

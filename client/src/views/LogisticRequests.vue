@@ -26,12 +26,18 @@ export default {
     async getAllItems() {
       // Retrieve all items
       await TaskService.getItems().then(items => {
-        this.$store.dispatch("setItemList", items);
+        this.$store.dispatch("setItemsList", items);
+      });
+    },
+    async getAllRegions() {
+      await TaskService.getRegions().then(regions => {
+        this.$store.dispatch("setRegionsList", regions);
       });
     }
   },
   created() {
     this.getAllItems();
+    this.getAllRegions();
   }
 };
 </script>

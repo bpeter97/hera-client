@@ -30,6 +30,15 @@ class TaskService {
     }
   }
 
+  static async getRegions() {
+    try {
+      const res = await axios.get(`${url}/regions/`);
+      return res.data.map(region => region);
+    } catch (err) {
+      return err;
+    }
+  }
+
   static async updateTask(task) {
     let patchUrl = `${url}/tasks/${task._id}`;
     return await axios.patch(patchUrl, task);
@@ -47,7 +56,7 @@ class TaskService {
 
   // Delete Task
   static deleteTask(id) {
-    return axios.delete(`${url}${id}`);
+    return axios.delete(`${url}/tasks/${id}`);
   }
 }
 

@@ -15,6 +15,9 @@ export default new Vuex.Store({
     items: {
       list: []
     },
+    regions: {
+      list: []
+    },
     count: 0
   },
   mutations: {
@@ -25,8 +28,11 @@ export default new Vuex.Store({
       state.loggedIn = true;
       state.user = data;
     },
-    setItemList(state, list) {
+    setItemsList(state, list) {
       state.items.list = list;
+    },
+    setRegionsList(state, list) {
+      state.regions.list = list;
     },
     increment(state) {
       state.count++;
@@ -47,8 +53,11 @@ export default new Vuex.Store({
     logout({ commit }) {
       commit("logout");
     },
-    setItemList({ commit }, data) {
-      commit("setItemList", data);
+    setItemsList({ commit }, data) {
+      commit("setItemsList", data);
+    },
+    setRegionsList({ commit }, data) {
+      commit("setRegionsList", data);
     }
   },
   getters: {
@@ -68,8 +77,11 @@ export default new Vuex.Store({
     getUserAvatar: state => {
       return `https://cdn.discordapp.com/avatars/${state.user.info.id}/${state.user.info.avatar}.png`;
     },
-    getItemList: state => {
+    getItemsList: state => {
       return state.items.list;
+    },
+    getRegionsList: state => {
+      return state.regions.list;
     }
   },
   plugins: [createPersistedState()]

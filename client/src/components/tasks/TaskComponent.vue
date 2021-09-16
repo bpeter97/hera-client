@@ -47,7 +47,7 @@ export default {
       status_value: 0,
       status_value_style: "width: 0%",
       task_image: [
-        require("./../../assets/images/regions/Map_Farranac_Coast.png")
+        require("./../../assets/images/regions/MapFarranacCoastHex.png")
       ],
       index: null
     };
@@ -55,7 +55,7 @@ export default {
   created() {
     this.task.items.forEach(item => {
       // find the item in the list of items
-      let foundItem = this.$store.getters.getItemList.find(
+      let foundItem = this.$store.getters.getItemsList.find(
         i => i.name === item.item
       );
 
@@ -97,7 +97,7 @@ export default {
   },
   methods: {
     getIcon(item) {
-      let found = this.$store.getters.getItemList.find(i => i.name === item);
+      let found = this.$store.getters.getItemsList.find(i => i.name === item);
       var img = "";
       try {
         img = require(`./../../assets/images/icons/${found.icon}-dark.png`);
@@ -107,7 +107,7 @@ export default {
       return img;
     },
     findIcon(item) {
-      let found = this.$store.getters.getItemList.find(
+      let found = this.$store.getters.getItemsList.find(
         i => i.name + "-dark" === item
       );
       if (found) {
