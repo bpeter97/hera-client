@@ -46,7 +46,7 @@ class TaskService {
 
   // Create Task
   static insertTask(task) {
-    return axios.post(url, task);
+    return axios.post(`${url}/tasks/`, task);
   }
 
   // Delete Task

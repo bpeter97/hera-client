@@ -6,6 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    error: "",
     auth: "",
     loggedIn: false,
     user: {
@@ -41,6 +42,9 @@ export default new Vuex.Store({
       state.loggedIn = false;
       state.auth = "";
       state.user = {};
+    },
+    error(state, data) {
+      state.error = data.message;
     }
   },
   actions: {
@@ -58,6 +62,9 @@ export default new Vuex.Store({
     },
     setRegionsList({ commit }, data) {
       commit("setRegionsList", data);
+    },
+    error({ commit }, data) {
+      commit("error", data);
     }
   },
   getters: {
@@ -82,6 +89,9 @@ export default new Vuex.Store({
     },
     getRegionsList: state => {
       return state.regions.list;
+    },
+    getError: state => {
+      return state.error;
     }
   },
   plugins: [createPersistedState()]

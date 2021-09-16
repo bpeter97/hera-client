@@ -17,6 +17,10 @@ class AuthService {
       const data = res.data;
       return data;
     } catch (err) {
+      this.$store.dispatch("logout");
+      this.$store.dispatch("error", {
+        message: "You must be a member of 1st RL to use this app."
+      });
       return err;
     }
   }
