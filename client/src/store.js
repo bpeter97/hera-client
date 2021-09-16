@@ -26,8 +26,15 @@ export default new Vuex.Store({
       state.auth = data;
     },
     setUserData(state, data) {
-      state.loggedIn = true;
-      state.user = data;
+      if (data.message) {
+        state.error =
+          "You must be a member of 1st RL to use this app. Speak to an officer if you are a member.";
+        state.loggedIn = false;
+        state.user = {};
+      } else {
+        state.loggedIn = true;
+        state.user = data;
+      }
     },
     setItemsList(state, list) {
       state.items.list = list;

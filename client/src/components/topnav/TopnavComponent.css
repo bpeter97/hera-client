@@ -1,5 +1,6 @@
-.discord-button {
-  background-color: #5165f6;
+.discord-button,
+.discord-button:visited {
+  background-color: #5165f6 !important;
   border-radius: 30px;
 }
 

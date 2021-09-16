@@ -31,15 +31,14 @@
 <template>
   <div class="home">
     <div>
+      <b-alert v-if="this.$store.getters.getError" show variant="danger">{{
+        this.$store.getters.getError
+      }}</b-alert>
       <b-jumbotron
         bg-variant="info"
         text-variant="white"
         class="home-jumbotron"
       >
-        <b-alert v-if="this.$store.getters.getError" show variant="danger">{{
-          this.$store.getters.getError
-        }}</b-alert>
-
         <template #header>Hera</template>
 
         <template #lead>
