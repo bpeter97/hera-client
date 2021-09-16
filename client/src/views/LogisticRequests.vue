@@ -36,6 +36,12 @@ export default {
     }
   },
   created() {
+    if (!this.$store.getters.isLoggedIn) {
+      this.$store.dispatch("error", {
+        message: "You must be logged in to review logistic requests."
+      });
+      this.$router.push("/");
+    }
     this.getAllItems();
     this.getAllRegions();
   }

@@ -157,9 +157,13 @@ export default {
   },
   mounted() {},
   created() {
-    // if (!this.$store.getters.isLoggedIn) {
-    //   this.$router.push("/logistics-requests");
-    // }
+    if (!this.$store.getters.isLoggedIn) {
+      this.$store.dispatch(
+        "error",
+        "You must be logged in to review logistic requests."
+      );
+      this.$router.push("/");
+    }
     if (this.$store.getters.getItemList === null) {
       this.getAllItems();
     }

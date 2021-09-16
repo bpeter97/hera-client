@@ -32,6 +32,7 @@ export default new Vuex.Store({
         state.loggedIn = false;
         state.user = {};
       } else {
+        state.error = "";
         state.loggedIn = true;
         state.user = data;
       }

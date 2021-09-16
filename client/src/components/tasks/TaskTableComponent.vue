@@ -221,8 +221,8 @@ export default {
 
 <template>
   <div class="task-tables-component">
-    <!-- <div class="text-left mb-3" v-if="this.$store.getters.isLoggedIn"> -->
-    <div class="text-left mb-3">
+    <div class="text-left mb-3" v-if="this.$store.getters.isLoggedIn">
+      <!-- <div class="text-left mb-3"> -->
       <b-button
         size="lg"
         class=""
