@@ -64,36 +64,6 @@ export default {
       this.hmats = this.hmats + foundItem.hmatCost * item.quantity;
       this.rmats = this.rmats + foundItem.rmatCost * item.quantity;
     });
-
-    switch (this.task.logiStatus) {
-      case logiStatus.PENDING:
-        this.status_value = 0;
-        this.status_value_style = "width: 0%";
-        break;
-      case logiStatus.ACCEPTED:
-        this.status_value = 25;
-        this.status_value_style = "width: 25%";
-        break;
-      case logiStatus.COOKING:
-        this.status_value = 50;
-        this.status_value_style = "width: 50%";
-        break;
-      case logiStatus.SHIPPING:
-        this.status_value = 75;
-        this.status_value_style = "width: 75%";
-        break;
-      case logiStatus.DELIVERING:
-        this.status_value = 75;
-        this.status_value_style = "width: 75%";
-        break;
-      case logiStatus.COMPLETED:
-        this.status_value = 100;
-        this.status_value_style = "width: 100%";
-        break;
-      default:
-        this.status_value = 0;
-        this.status_value_style = "width: 0%";
-    }
   },
   methods: {
     getIcon(item) {
@@ -129,16 +99,20 @@ export default {
         case taskStatus.ACCEPTED:
           variant = "primary";
           break;
+        case logiStatus.DELAYED:
+          variant = "warning";
+          break;
         default:
+          variant = "primary";
           break;
       }
 
       return variant;
     },
-    checkProgress(logiStatus) {
+    checkProgress(status) {
       let variant = "progress-bar progress-bar-striped progress-bar-animated ";
 
-      switch (logiStatus) {
+      switch (status) {
         case logiStatus.PENDING:
           variant = `${variant} bg-warning`;
           break;
@@ -146,18 +120,20 @@ export default {
           variant = `progress-bar progress-bar-striped bg-success`;
           break;
         case logiStatus.ACCEPTED:
-          variant = `${variant} bg-warning`;
+          variant = `${variant} bg-primary`;
           break;
         case logiStatus.COOKING:
-          variant = `${variant} bg-warning`;
+          variant = `${variant} bg-primary`;
           break;
         case logiStatus.DELIVERING:
           variant = `${variant} bg-primary`;
           break;
+        case logiStatus.DELAYED:
+          variant = "progress-bar progress-bar-striped bg-warning";
+          break;
         default:
           break;
       }
-
       return variant;
     },
     checkPrecedence(check) {
@@ -189,6 +165,35 @@ export default {
     updateLogiStatus(task, newLogiStatus) {
       task.logiStatus = newLogiStatus;
       TaskService.updateTask(task);
+
+      switch (this.task.logiStatus) {
+        case logiStatus.PENDING:
+          this.status_value = 0;
+          this.status_value_style = "width: 0%";
+          break;
+        case logiStatus.ACCEPTED:
+          this.status_value = 25;
+          this.status_value_style = "width: 25%";
+          break;
+        case logiStatus.COOKING:
+          this.status_value = 50;
+          this.status_value_style = "width: 50%";
+          break;
+        case logiStatus.SHIPPING:
+          this.status_value = 75;
+          this.status_value_style = "width: 75%";
+          break;
+        case logiStatus.DELIVERING:
+          this.status_value = 75;
+          this.status_value_style = "width: 75%";
+          break;
+        case logiStatus.COMPLETED:
+          this.status_value = 100;
+          this.status_value_style = "width: 100%";
+          break;
+        default:
+          break;
+      }
     },
     assignSelf(task) {
       task.assignedTo.push(this.$store.getters.getUsername);
@@ -282,6 +287,11 @@ export default {
                   >
                   <b-dropdown-item
                     href="#"
+                    v-on:click="updateLogiStatus(task, 'Delayed')"
+                    >Change to "Delayed"</b-dropdown-item
+                  >
+                  <b-dropdown-item
+                    href="#"
                     v-on:click="updateLogiStatus(task, 'Completed')"
                     >Change to "Completed"</b-dropdown-item
                   >
@@ -368,7 +378,7 @@ export default {
               <h5 class="card-title" style="position: absolute; bottom: 30%;">
                 Logi Status:
                 <b-badge
-                  v-bind:variant="checkVariant(task.status)"
+                  v-bind:variant="checkVariant(task.logiStatus)"
                   class="d-inline"
                 >
                   {{ task.logiStatus }}</b-badge

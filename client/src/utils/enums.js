@@ -10,6 +10,7 @@ const logiStatus = {
   COOKING: "Cooking",
   SHIPPING: "Shipping",
   DELIVERING: "Delivering",
+  DELAYED: "Delayed",
   COMPLETED: "Completed"
 };
 

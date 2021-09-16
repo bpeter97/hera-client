@@ -40,14 +40,16 @@ export default {
           icon: "tasks"
         },
         {
-          label: "Artillery Map",
-          url: "/artillery-map",
-          icon: "map",
+          label: "Factory Calculator",
+          url: "/calculator",
+          icon: "calculator",
           disabled: true
         }
       ]
     };
-  }
+  },
+  create() {},
+  mounted() {}
 };
 </script>
 
