@@ -46,12 +46,7 @@ class TaskService {
 
   // Create Task
   static insertTask(task) {
-    return axios.post(url, {
-      location: task.location,
-      precedence: task.precedence,
-      enemyActivity: task.enemyActivity,
-      items: task.items
-    });
+    return axios.post(url, task);
   }
 
   // Delete Task
