@@ -69,11 +69,6 @@ export default {
           }
 
           this.calculateCounters();
-          this.addChangeAlert({
-            message: `Request: 1STRL-${t.task.taskId}(${t.task.status}) has been updated!`,
-            id: t.task.taskId,
-            show: true
-          });
         }
       }
     });
