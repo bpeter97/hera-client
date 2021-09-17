@@ -23,7 +23,7 @@ class TaskService {
 
   static async getItems() {
     try {
-      const res = await axios.get(`${url}/items/`);
+      const res = await axios.get(`${url}/items/colonial`);
       return res.data.map(item => item);
     } catch (err) {
       return err;

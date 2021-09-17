@@ -48,7 +48,37 @@ export default {
       ]
     };
   },
-  create() {},
+  create() {
+    this.$store.state.loggedIn = true;
+    this.$store.state.user = {
+      info: {
+        id: "184092635747713024",
+        username: "Critinator",
+        avatar: "75c9ea9e3a5f3e5bb9574d42023928ea",
+        discriminator: "3890",
+        public_flags: 0,
+        flags: 0,
+        banner: null,
+        banner_color: null,
+        accent_color: null,
+        locale: "en-US",
+        mfa_enabled: false
+      },
+      guild: {
+        id: "874226647077892106",
+        name: "1st Royal Lancers",
+        icon: "c207166752d134522953874365f80c1c",
+        owner: false,
+        permissions: 104320577,
+        features: [
+          "THREE_DAY_THREAD_ARCHIVE",
+          "INVITE_SPLASH",
+          "ANIMATED_ICON"
+        ],
+        permissions_new: "934259707457"
+      }
+    };
+  },
   mounted() {}
 };
 </script>

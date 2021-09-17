@@ -60,6 +60,24 @@ export default {
           class: "align-middle"
         }
       ],
+      vehicleFields: [
+        {
+          key: "icon",
+          label: "",
+          class: "align-middle"
+        },
+        {
+          key: "name",
+          label: "Item",
+          sortable: true,
+          class: "align-middle"
+        },
+        {
+          key: "_id",
+          label: "",
+          class: "align-middle"
+        }
+      ],
       addedItems: []
     };
   },
@@ -122,10 +140,9 @@ export default {
       return "This is required.";
     },
     getItems(filter) {
-      var allItems = this.$store.getters.getItemsList.filter(
-        item => item.faction === "Colonial" || item.faction === "Neutral"
+      return this.$store.getters.getItemsList.filter(
+        item => item.category === filter
       );
-      return allItems.filter(item => item.category === filter);
     },
     getIcon(item) {
       let found = this.$store.getters.getItemsList.find(i => i.name === item);
@@ -149,7 +166,10 @@ export default {
       let newItem = {
         item: data.item.name,
         quantity: this.$refs[data.value].value,
-        type: "crates"
+        type:
+          data.item.category === "Garage" || data.item.category === "Artillery"
+            ? "units"
+            : "crates"
       };
 
       this.addedItems.push(newItem);
@@ -268,13 +288,13 @@ export default {
           <b-table striped hover v-else :items="addedItems"></b-table>
         </b-card>
         <b-card
-          header="Request is Ready"
+          title="Request is Ready"
           v-if="isRequestReady"
-          header-tag="header"
+          class="text-center"
         >
-          <span class="input-group-text"
+          <span class="align-content-center"
             ><button
-              class="btn btn-primary"
+              class="btn btn-primary mt-3"
               v-on:click="handleSubmit()"
               type="button"
             >
@@ -358,7 +378,7 @@ export default {
                 />
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item mr-1">
               <a
                 class="nav-link text-center facility-button"
                 id="pills-facilities-tab"
@@ -373,6 +393,40 @@ export default {
                   v-bind:src="
                     require('./../assets/images/icons/FacilitiesSuppliesIcon.png')
                   "
+                  :height="45"
+                />
+              </a>
+            </li>
+            <li class="nav-item mr-1">
+              <a
+                class="nav-link text-center facility-button"
+                id="pills-artillery-tab"
+                data-toggle="pill"
+                href="#pills-artillery"
+                role="tab"
+                aria-controls="pills-artillery"
+                aria-selected="true"
+              >
+                <img
+                  class="image"
+                  v-bind:src="require('./../assets/images/icons/artillery.png')"
+                  :height="45"
+                />
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-center facility-button"
+                id="pills-garage-tab"
+                data-toggle="pill"
+                href="#pills-garage"
+                role="tab"
+                aria-controls="pills-garage"
+                aria-selected="true"
+              >
+                <img
+                  class="image"
+                  v-bind:src="require('./../assets/images/icons/garage.png')"
                   :height="45"
                 />
               </a>
@@ -594,6 +648,108 @@ export default {
                 striped
                 :items="getItems('Supplies Facility')"
                 :fields="itemListFields"
+              >
+                <template #cell(icon)="data">
+                  <img
+                    class="image mr-2"
+                    v-bind:src="
+                      require(`./../assets/images/icons/${data.value}-dark.png`)
+                    "
+                    :height="30"
+                  />
+                </template>
+
+                <template #cell(name)="data">
+                  {{ data.value }}
+                </template>
+
+                <template #cell(_id)="data">
+                  <div class="input-group align-middle">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder=""
+                      aria-label=""
+                      value=""
+                      :ref="data.value"
+                      :aria-describedby="data.value"
+                    />
+                    <div class="input-group-append">
+                      <span class="input-group-text"
+                        ><button
+                          class="btn btn-primary"
+                          v-on:click="addItemToArray(data)"
+                          type="button"
+                        >
+                          Add
+                        </button></span
+                      >
+                    </div>
+                  </div>
+                </template>
+              </b-table>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="pills-artillery"
+              role="tabpanel"
+              aria-labelledby="pills-artillery-tab"
+            >
+              <b-table
+                striped
+                :items="getItems('Artillery')"
+                :fields="vehicleFields"
+              >
+                <template #cell(icon)="data">
+                  <img
+                    class="image mr-2"
+                    v-bind:src="
+                      require(`./../assets/images/icons/${data.value}-dark.png`)
+                    "
+                    :height="30"
+                  />
+                </template>
+
+                <template #cell(name)="data">
+                  {{ data.value }}
+                </template>
+
+                <template #cell(_id)="data">
+                  <div class="input-group align-middle">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder=""
+                      aria-label=""
+                      value=""
+                      :ref="data.value"
+                      :aria-describedby="data.value"
+                    />
+                    <div class="input-group-append">
+                      <span class="input-group-text"
+                        ><button
+                          class="btn btn-primary"
+                          v-on:click="addItemToArray(data)"
+                          type="button"
+                        >
+                          Add
+                        </button></span
+                      >
+                    </div>
+                  </div>
+                </template>
+              </b-table>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="pills-garage"
+              role="tabpanel"
+              aria-labelledby="pills-garage-tab"
+            >
+              <b-table
+                striped
+                :items="getItems('Garage')"
+                :fields="vehicleFields"
               >
                 <template #cell(icon)="data">
                   <img
