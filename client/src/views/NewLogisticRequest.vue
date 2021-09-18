@@ -27,6 +27,7 @@ export default {
       region: "",
       regionList: [],
       precedenceList: [
+        { value: "Critical", text: "Critical" },
         { value: "High", text: "High" },
         { value: "Medium", text: "Medium" },
         { value: "Low", text: "Low" }
@@ -110,6 +111,7 @@ export default {
       let newRequest = {
         requestedBy: this.$store.getters.getUsername,
         location: this.location,
+        region: this.region,
         precedence: this.precedence,
         enemyActivity: this.enemyActivity,
         items: this.addedItems
@@ -210,7 +212,25 @@ export default {
     <div class="new-request pl-4 pr-4 pb-4">
       <!-- <b-card-group columns> -->
       <div class="card-columns">
-        <b-card header="Request Details" header-tag="header">
+        <b-card title="Request Details" header-tag="header">
+          <ul class="list-group list-group-flush pb-4">
+            <li class="list-group-item">
+              Priority Definitions:
+            </li>
+            <li class="list-group-item list-group-item-danger">
+              Crtitcal: Bunker is about to fall without these resources!
+            </li>
+            <li class="list-group-item list-group-item-warning">
+              High: Its going to be needed here sooner rather then later.
+            </li>
+            <li class="list-group-item list-group-item-warning">
+              Medium: Restocking a resource that there is still a lot of but is
+              being used fast.
+            </li>
+            <li class="list-group-item list-group-item-info">
+              Low: If it’s just simply something you want at the base.
+            </li>
+          </ul>
           <b-form-group
             id="fieldset-horizontal"
             label-cols-sm="3"
@@ -283,7 +303,7 @@ export default {
             ></b-form-select>
           </b-form-group>
         </b-card>
-        <b-card header="Request Items" header-tag="header">
+        <b-card title="Request Items" header-tag="header">
           <h5 v-if="addedItems.length === 0">No items added yet..</h5>
           <b-table striped hover v-else :items="addedItems"></b-table>
         </b-card>
@@ -302,9 +322,9 @@ export default {
             </button></span
           >
         </b-card>
-        <b-card header="Inventory" header-tag="header">
+        <b-card title="Inventory" header-tag="header">
           <ul
-            class="nav nav-pills mb-3 justify-content-center"
+            class="nav nav-pills mb-3 pt-2 justify-content-center"
             id="pills-tab"
             role="tablist"
           >

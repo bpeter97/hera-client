@@ -17,7 +17,8 @@ const logiStatus = {
 const precedence = {
   LOW: "Low",
   MEDIUM: "Medium",
-  HIGH: "High"
+  HIGH: "High",
+  CRITICAL: "Critical"
 };
 
 module.exports = { taskStatus, logiStatus, precedence };

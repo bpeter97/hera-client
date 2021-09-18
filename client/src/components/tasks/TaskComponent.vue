@@ -46,13 +46,18 @@ export default {
       delete_modal: false,
       status_value: 0,
       status_value_style: "width: 0%",
-      task_image: [
-        require("./../../assets/images/regions/MapFarranacCoastHex.png")
-      ],
+      task_image: [],
       index: null
     };
   },
   created() {
+    let tempRegion = this.$store.getters.getRegionsList.find(
+      region => region.name === this.task.region
+    );
+    this.task_image.push(
+      require(`./../../assets/images/regions/${tempRegion.icon}.png`)
+    );
+
     this.task.items.forEach(item => {
       // find the item in the list of items
       let foundItem = this.$store.getters.getItemsList.find(
@@ -195,6 +200,10 @@ export default {
           break;
       }
     },
+    updateTaskPrecedence(task, newPrecedence) {
+      task.precedence = newPrecedence;
+      TaskService.updateTask(task);
+    },
     assignSelf(task) {
       task.assignedTo.push(this.$store.getters.getUsername);
       TaskService.updateTask(task);
@@ -296,6 +305,29 @@ export default {
                     >Change to "Completed"</b-dropdown-item
                   >
                 </b-dropdown>
+                <b-dropdown
+                  id="dropdown-right"
+                  right
+                  text="Update Precedence"
+                  variant="primary"
+                  class="m-1 task-dropdown"
+                >
+                  <b-dropdown-item
+                    href="#"
+                    v-on:click="updateTaskPrecedence(task, 'Low')"
+                    >Change to "Low"</b-dropdown-item
+                  >
+                  <b-dropdown-item
+                    href="#"
+                    v-on:click="updateTaskPrecedence(task, 'Medium')"
+                    >Change to "Medium"</b-dropdown-item
+                  >
+                  <b-dropdown-item
+                    href="#"
+                    v-on:click="updateTaskPrecedence(task, 'High')"
+                    >Change to "High"</b-dropdown-item
+                  >
+                </b-dropdown>
 
                 <b-dropdown
                   id="dropdown-right"
@@ -304,11 +336,11 @@ export default {
                   variant="primary"
                   class="m-2 task-dropdown"
                 >
-                  <b-dropdown-item href="#" @click="unassignSelf(task)"
-                    >Unassign Self</b-dropdown-item
-                  >
                   <b-dropdown-item href="#" @click="assignSelf(task)"
                     >Assign Self</b-dropdown-item
+                  >
+                  <b-dropdown-item href="#" @click="unassignSelf(task)"
+                    >Unassign Self</b-dropdown-item
                   >
                 </b-dropdown>
 
@@ -405,7 +437,8 @@ export default {
               </h5>
             </div>
             <div class="col-6 text-center">
-              <h5 class="card-title">Region: {{ task.location }}</h5>
+              <h5 class="card-title">Location: {{ task.location }}</h5>
+              <h5 class="card-title">Region: {{ task.region }}</h5>
               <CoolLightBox
                 :items="task_image"
                 :index="index"
