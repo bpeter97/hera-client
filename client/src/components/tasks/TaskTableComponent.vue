@@ -216,13 +216,14 @@ export default {
     });
   },
   checkRecruit(roles) {
-    let isRecruit = false;
+    // reverse boolean to hide if they are a recruit.
+    let isNotARecruit = true;
     roles.forEach(role => {
       if (role === "Recruit") {
-        isRecruit = true;
+        isNotARecruit = false;
       }
     });
-    return isRecruit;
+    return isNotARecruit;
   },
   props: {}
 };
@@ -232,7 +233,7 @@ export default {
   <div class="task-tables-component">
     <div
       class="text-left mb-3"
-      v-if="!checkRecruit(this.$store.getters.getUserRoles)"
+      v-if="checkRecruit(this.$store.getters.getUserRoles)"
     >
       <!-- <div class="text-left mb-3"> -->
       <b-button
