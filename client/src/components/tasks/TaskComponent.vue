@@ -203,6 +203,11 @@ export default {
     },
     updateStatus(task, newStatus) {
       task.status = newStatus;
+      if (newStatus === "Completed") {
+        this.status_value = 100;
+        this.status_value_style = "width: 100%";
+        task.logiStatus = "Completed";
+      }
       TaskService.updateTask(task);
     },
     deleteTask(task) {
@@ -210,6 +215,7 @@ export default {
     },
     updateLogiStatus(task, newLogiStatus) {
       task.logiStatus = newLogiStatus;
+      TaskService.updateTask(task);
       TaskService.updateTask(task);
 
       switch (this.task.logiStatus) {
