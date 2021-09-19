@@ -73,7 +73,7 @@ export default {
     });
 
     this.$store.getters.getUserRoles.forEach(role => {
-      if (role === "Hermes Compnay") {
+      if (role === "Hermes Company") {
         this.isHermes = true;
       }
       if (role === "Hermes Company Leadership" || role === "Regiment Command") {
