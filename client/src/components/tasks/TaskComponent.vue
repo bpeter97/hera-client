@@ -193,6 +193,9 @@ export default {
           variant = "warning";
           break;
         case precedence.HIGH:
+          variant = "warning";
+          break;
+        case precedence.CRITICAL:
           variant = "danger";
           break;
         default:
@@ -373,6 +376,11 @@ export default {
                     href="#"
                     v-on:click="updateTaskPrecedence(task, 'High')"
                     >Change to "High"</b-dropdown-item
+                  >
+                  <b-dropdown-item
+                    href="#"
+                    v-on:click="updateTaskPrecedence(task, 'Critical')"
+                    >Change to "Critical"</b-dropdown-item
                   >
                 </b-dropdown>
 
