@@ -81,6 +81,35 @@ export default {
         this.isHermes = true;
       }
     });
+
+    switch (this.task.logiStatus) {
+      case logiStatus.PENDING:
+        this.status_value = 0;
+        this.status_value_style = "width: 0%";
+        break;
+      case logiStatus.ACCEPTED:
+        this.status_value = 25;
+        this.status_value_style = "width: 25%";
+        break;
+      case logiStatus.COOKING:
+        this.status_value = 50;
+        this.status_value_style = "width: 50%";
+        break;
+      case logiStatus.SHIPPING:
+        this.status_value = 75;
+        this.status_value_style = "width: 75%";
+        break;
+      case logiStatus.DELIVERING:
+        this.status_value = 75;
+        this.status_value_style = "width: 75%";
+        break;
+      case logiStatus.COMPLETED:
+        this.status_value = 100;
+        this.status_value_style = "width: 100%";
+        break;
+      default:
+        break;
+    }
   },
   methods: {
     getIcon(item) {
