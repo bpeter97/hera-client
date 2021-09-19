@@ -208,22 +208,22 @@ export default {
     },
     createRequest() {
       this.$router.push("/logistics-requests/new");
+    },
+    checkRecruit(roles) {
+      // reverse boolean to hide if they are a recruit.
+      let isNotARecruit = true;
+      roles.forEach(role => {
+        if (role === "Recruit") {
+          isNotARecruit = false;
+        }
+      });
+      return isNotARecruit;
     }
   },
   created() {
     this.getAllTasks().then(() => {
       this.calculateCounters();
     });
-  },
-  checkRecruit(roles) {
-    // reverse boolean to hide if they are a recruit.
-    let isNotARecruit = true;
-    roles.forEach(role => {
-      if (role === "Recruit") {
-        isNotARecruit = false;
-      }
-    });
-    return isNotARecruit;
   },
   props: {}
 };

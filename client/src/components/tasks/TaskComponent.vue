@@ -47,7 +47,9 @@ export default {
       status_value: 0,
       status_value_style: "width: 0%",
       task_image: [],
-      index: null
+      index: null,
+      isHermes: false,
+      isLeadership: false
     };
   },
   created() {
@@ -68,6 +70,16 @@ export default {
       this.emats = this.emats + foundItem.ematCost * item.quantity;
       this.hmats = this.hmats + foundItem.hmatCost * item.quantity;
       this.rmats = this.rmats + foundItem.rmatCost * item.quantity;
+    });
+
+    this.$store.getters.getUserRoles.forEach(role => {
+      if (role === "Hermes Compnay") {
+        this.isHermes = true;
+      }
+      if (role === "Hermes Company Leadership" || role === "Regiment Command") {
+        this.isLeadership = true;
+        this.isHermes = true;
+      }
     });
   },
   methods: {
@@ -237,7 +249,7 @@ export default {
               </div>
             </div>
             <div class="my-auto ml-auto" v-if="task.status !== 'Completed'">
-              <div>
+              <div v-if="this.isHermes || this.isLeadership">
                 <b-dropdown
                   id="dropdown-right"
                   right
@@ -345,6 +357,7 @@ export default {
                 </b-dropdown>
 
                 <b-button
+                  v-if="this.isLeadership"
                   v-b-modal.delete-modal
                   variant="outline-danger"
                   class="ml-2"
