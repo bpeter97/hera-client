@@ -100,6 +100,9 @@ export default new Vuex.Store({
     },
     getError: state => {
       return state.error;
+    },
+    getUserRoles: state => {
+      return state.user.roles;
     }
   },
   plugins: [createPersistedState()]

@@ -215,13 +215,25 @@ export default {
       this.calculateCounters();
     });
   },
+  checkRecruit(roles) {
+    let isRecruit = false;
+    roles.forEach(role => {
+      if (role === "Recruit") {
+        isRecruit = true;
+      }
+    });
+    return isRecruit;
+  },
   props: {}
 };
 </script>
 
 <template>
   <div class="task-tables-component">
-    <div class="text-left mb-3" v-if="this.$store.getters.isLoggedIn">
+    <div
+      class="text-left mb-3"
+      v-if="!checkRecruit(this.$store.getters.getUserRoles)"
+    >
       <!-- <div class="text-left mb-3"> -->
       <b-button
         size="lg"
