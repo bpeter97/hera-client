@@ -6,6 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    darkmode: false,
     error: "",
     auth: "",
     loggedIn: false,
@@ -53,6 +54,9 @@ export default new Vuex.Store({
     },
     error(state, data) {
       state.error = data.message;
+    },
+    toggleDarkmode: state => {
+      state.darkmode = !state.darkmode;
     }
   },
   actions: {
@@ -73,6 +77,9 @@ export default new Vuex.Store({
     },
     error({ commit }, data) {
       commit("error", data);
+    },
+    toggleDarkmode({ commit }) {
+      commit("toggleDarkmode");
     }
   },
   getters: {
@@ -103,6 +110,9 @@ export default new Vuex.Store({
     },
     getUserRoles: state => {
       return state.user.roles;
+    },
+    getDarkMode: state => {
+      return state.darkmode;
     }
   },
   plugins: [createPersistedState()]

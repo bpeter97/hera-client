@@ -272,9 +272,9 @@ pre {
 .table td {
   padding: 0.75rem;
 }
-.table .table {
+/* .table .table {
   background-color: #fff;
-}
+} */
 
 .table-sm th,
 .table-sm td {

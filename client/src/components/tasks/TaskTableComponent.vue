@@ -271,6 +271,35 @@ export default {
           <b-table
             striped
             hover
+            v-if="this.$store.getters.getDarkMode"
+            dark
+            :items="getTasks('Pending')"
+            :fields="pendingItemFields"
+          >
+            <template #cell(enemyActivity)="data">
+              {{ data.value ? "Yes" : "No" }}
+            </template>
+
+            <template #cell(details)="row">
+              <b-button
+                size="sm"
+                @click="row.toggleDetails"
+                class="mr-2"
+                variant="primary"
+              >
+                {{ row.detailsShowing ? "Hide" : "View" }}
+                Request
+              </b-button>
+            </template>
+
+            <template #row-details="row">
+              <TaskComponent :task="row.item" :taskId="row.taskId" />
+            </template>
+          </b-table>
+          <b-table
+            striped
+            hover
+            v-else
             :items="getTasks('Pending')"
             :fields="pendingItemFields"
           >
@@ -299,6 +328,35 @@ export default {
           ><b-table
             striped
             hover
+            v-if="this.$store.getters.getDarkMode"
+            dark
+            :items="getTasks('Accepted')"
+            :fields="acceptedItemFields"
+          >
+            <template #cell(enemyActivity)="data">
+              {{ data.value ? "Yes" : "No" }}
+            </template>
+
+            <template #cell(details)="row">
+              <b-button
+                size="sm"
+                @click="row.toggleDetails"
+                class="mr-2"
+                variant="primary"
+              >
+                {{ row.detailsShowing ? "Hide" : "View" }}
+                Request
+              </b-button>
+            </template>
+
+            <template #row-details="row">
+              <TaskComponent :task="row.item" />
+            </template>
+          </b-table>
+          <b-table
+            striped
+            hover
+            v-else
             :items="getTasks('Accepted')"
             :fields="acceptedItemFields"
           >
@@ -322,10 +380,12 @@ export default {
               <TaskComponent :task="row.item" />
             </template> </b-table
         ></b-tab>
-        <b-tab title="Completed Requests"
-          ><b-table
+        <b-tab title="Completed Requests">
+          <b-table
             striped
             hover
+            v-if="this.$store.getters.getDarkMode"
+            dark
             :items="getTasks('Completed')"
             :fields="acceptedItemFields"
           >
@@ -347,8 +407,36 @@ export default {
 
             <template #row-details="row">
               <TaskComponent :task="row.item" />
-            </template> </b-table
-        ></b-tab>
+            </template>
+          </b-table>
+          <b-table
+            striped
+            hover
+            v-else
+            :items="getTasks('Completed')"
+            :fields="acceptedItemFields"
+          >
+            <template #cell(enemyActivity)="data">
+              {{ data.value ? "Yes" : "No" }}
+            </template>
+
+            <template #cell(details)="row">
+              <b-button
+                size="sm"
+                @click="row.toggleDetails"
+                class="mr-2"
+                variant="primary"
+              >
+                {{ row.detailsShowing ? "Hide" : "View" }}
+                Request
+              </b-button>
+            </template>
+
+            <template #row-details="row">
+              <TaskComponent :task="row.item" />
+            </template>
+          </b-table>
+        </b-tab>
       </b-tabs>
     </div>
   </div>

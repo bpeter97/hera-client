@@ -1,9 +1,15 @@
 <template>
-  <div class="LogisticsRequests pt-1 pl-4 pr-4 pb-4">
+  <div v-bind:class="logisticRequestClass">
     <HeaderComponent label="Logistics Requests" />
     <TaskTableComponent />
   </div>
 </template>
+
+<style>
+.LogisticsRequests-dark {
+  background-color: #383d42 !important;
+}
+</style>
 
 <script>
 // @ is an alias to /src
@@ -44,6 +50,18 @@ export default {
     }
     this.getAllItems();
     this.getAllRegions();
+  },
+  computed: {
+    logisticRequestClass: function() {
+      return {
+        LogisticsRequests: true,
+        "pt-1": true,
+        "pl-4": true,
+        "pr-4": true,
+        "pb-4": true,
+        "LogisticsRequests-dark": this.$store.getters.getDarkMode ? true : false
+      };
+    }
   }
 };
 </script>

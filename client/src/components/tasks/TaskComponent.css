@@ -13,3 +13,30 @@
   font-size: 1.2rem;
   font-style: italic;
 }
+
+.task-dropdown ul li:hover,
+.task-dropdown ul li:focus {
+  background-color: rgb(0, 153, 255);
+}
+
+.required-mats-text {
+  font-size: 1.5rem;
+}
+
+.danger-task-enemy {
+  color: #ffffff;
+  background-color: #ff00009c !important;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 0.46875rem 2.1875rem rgb(90 97 105 / 10%),
+    0 0.9375rem 1.40625rem rgb(90 97 105 / 10%),
+    0 0.25rem 0.53125rem rgb(90 97 105 / 12%),
+    0 0.125rem 0.1875rem rgb(90 97 105 / 10%);
+  box-shadow: 0 0.46875rem 2.1875rem rgb(90 97 105 / 10%),
+    0 0.9375rem 1.40625rem rgb(90 97 105 / 10%),
+    0 0.25rem 0.53125rem rgb(90 97 105 / 12%),
+    0 0.125rem 0.1875rem rgb(90 97 105 / 10%);
+}
+
+/* .table .table {
+  background-color: rgb(95, 95, 95) !important;
+} */

@@ -1,5 +1,5 @@
 <template>
-  <body class="" id="app">
+  <body v-bind:class="containerClass" id="app">
     <div class="container-fluid">
       <div class="row">
         <!-- <SidebarComponent  /> -->
@@ -49,7 +49,14 @@ export default {
     };
   },
   create() {},
-  mounted() {}
+  mounted() {},
+  computed: {
+    containerClass: function() {
+      return {
+        "bg-light-grey": this.$store.getters.getDarkMode ? true : false
+      };
+    }
+  }
 };
 </script>
 
@@ -61,6 +68,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   height: 100vh;
+}
+
+.bg-light-grey {
+  background-color: #383d42 !important;
 }
 
 .border-right {

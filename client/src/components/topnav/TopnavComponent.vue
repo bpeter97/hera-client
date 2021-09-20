@@ -1,5 +1,19 @@
 <style scoped>
 @import "./TopnavComponent.css";
+
+.navbar-brand-dark {
+  color: white !important;
+}
+
+.nav-link-dark {
+  color: white !important;
+}
+.nav-link-dark.disabled {
+  color: white !important;
+}
+.user-name-dark {
+  color: white !important;
+}
 </style>
 
 <script>
@@ -13,6 +27,16 @@ export default {
     logout() {
       this.$store.dispatch("logout");
       this.$router.push("/");
+    },
+    handleDarkmode() {
+      this.$store.dispatch("toggleDarkmode");
+    },
+    navLinkClass(link) {
+      return {
+        "nav-link": true,
+        disabled: link.disabled ? "disabled" : "",
+        "nav-link-dark": this.$store.getters.getDarkMode ? true : false
+      };
     }
   },
   data() {
@@ -22,18 +46,51 @@ export default {
   },
   mounted() {},
   created() {},
-  computed: {},
+  computed: {
+    navClass: function() {
+      return {
+        navbar: true,
+        "navbar-expand-lg": true,
+        "navbar-light": this.$store.getters.getDarkMode ? false : true,
+        "bg-light": this.$store.getters.getDarkMode ? false : true,
+        "navbar-dark": this.$store.getters.getDarkMode ? true : false,
+        "bg-dark": this.$store.getters.getDarkMode ? true : false
+      };
+    },
+    brandClass: function() {
+      return {
+        "navbar-brand": true,
+        "navbar-brand-dark": this.$store.getters.getDarkMode ? true : false
+      };
+    },
+    usernameClass: function() {
+      return {
+        "d-none": true,
+        "d-md-inline-block": true,
+        "user-name-dark": this.$store.getters.getDarkMode ? true : false
+      };
+    },
+    heraLogo: function() {
+      let img;
+      if (this.$store.getters.getDarkMode) {
+        img = require("./../../assets/heralogo-light.png");
+      } else {
+        img = require("./../../assets/heralogo.png");
+      }
+      return img;
+    }
+  },
   watch: {}
 };
 </script>
 
 <template>
   <div class="main-navbar sticky-top bg-white">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav v-bind:class="navClass">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/">
+        <a v-bind:class="brandClass" href="/">
           <img
-            src="./../../assets/heralogo.png"
+            v-bind:src="heraLogo"
             alt="Hera Logo"
             class="d-inline-block align-middle mr-1"
             style="max-width: 25px;"
@@ -64,7 +121,7 @@ export default {
             >
               <a
                 :href="link.url"
-                v-bind:class="link.disabled ? 'nav-link disabled' : 'nav-link'"
+                v-bind:class="navLinkClass(link)"
                 :aria-disabled="link.disabled"
               >
                 <font-awesome-icon :icon="link.icon" class="fa-icon mr-3" />
@@ -119,17 +176,29 @@ export default {
                   v-bind:src="this.$store.getters.getUserAvatar"
                   alt="User Avatar"
                 />
-                <span class="d-none d-md-inline-block">{{
+                <span v-bind:class="usernameClass">{{
                   this.$store.getters.getUsername
                 }}</span>
               </a>
               <div
-                class="dropdown-menu dropdown-menu-small"
+                class="dropdown-menu dropdown-menu-small text-center"
                 aria-labelledby="dropdownMenuLink"
               >
                 <a class="dropdown-item disabled" href="user-profile-lite.html">
-                  Profile</a
+                  Dark Mode</a
                 >
+                <label class="switch switch-left-right">
+                  <input
+                    type="checkbox"
+                    class="switch-input"
+                    id="notifications"
+                    v-on:click="handleDarkmode()"
+                    v-bind:checked="this.$store.getters.getDarkMode"
+                    name="notifications"
+                  />
+                  <span class="switch-label" data-on="On" data-off="Off"></span>
+                  <span class="switch-handle"></span>
+                </label>
                 <div class="dropdown-divider"></div>
                 <a
                   class="dropdown-item text-danger"

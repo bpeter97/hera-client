@@ -1,6 +1,10 @@
 <style scoped>
 @import "./NewLogisticRequest.css";
 
+.nav-pills:hover {
+  background-color: #fdfdfd00;
+}
+
 hr {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -10,6 +14,15 @@ hr {
 
 .card-columns {
   column-count: 2;
+}
+
+.darkmode-bg {
+  background-color: rgb(97, 97, 97);
+  color: white !important;
+}
+.darkmode-bg h4,
+.darkmode-bg h5 {
+  color: white !important;
 }
 </style>
 
@@ -99,7 +112,6 @@ export default {
       this.checkReady(val);
     }
   },
-  computed: {},
   methods: {
     async getAllItems() {
       // Retrieve all items
@@ -191,15 +203,25 @@ export default {
     }
 
     this.getRegionList();
+  },
+  computed: {
+    cardBodyClass: function() {
+      return {
+        card: true,
+        "darkmode-bg": this.$store.getters.getDarkMode ? true : false
+      };
+    },
+    backgroundClass: function() {
+      return {
+        "bg-light-grey": this.$store.getters.getDarkMode ? true : false
+      };
+    }
   }
 };
 </script>
 
 <template
-  ><div
-    class="
-"
-  >
+  ><div v-bind:class="backgroundClass">
     <div class="pb-4">
       <b-jumbotron
         bg-variant="info"
@@ -212,7 +234,11 @@ export default {
     <div class="new-request pl-4 pr-4 pb-4">
       <!-- <b-card-group columns> -->
       <div class="card-columns">
-        <b-card title="Request Details" header-tag="header">
+        <b-card
+          :class="cardBodyClass"
+          title="Request Details"
+          header-tag="header"
+        >
           <ul class="list-group list-group-flush pb-4">
             <li class="list-group-item">
               Priority Definitions:
@@ -303,14 +329,18 @@ export default {
             ></b-form-select>
           </b-form-group>
         </b-card>
-        <b-card title="Request Items" header-tag="header">
+        <b-card
+          :class="cardBodyClass"
+          title="Request Items"
+          header-tag="header"
+        >
           <h5 v-if="addedItems.length === 0">No items added yet..</h5>
           <b-table striped hover v-else :items="addedItems"></b-table>
         </b-card>
         <b-card
           title="Request is Ready"
           v-if="isRequestReady"
-          class="text-center"
+          :class="cardBodyClass"
         >
           <span class="align-content-center"
             ><button
@@ -322,7 +352,7 @@ export default {
             </button></span
           >
         </b-card>
-        <b-card title="Inventory" header-tag="header">
+        <b-card :class="cardBodyClass" title="Inventory" header-tag="header">
           <ul
             class="nav nav-pills mb-3 pt-2 justify-content-center"
             id="pills-tab"
@@ -461,6 +491,54 @@ export default {
             >
               <b-table
                 striped
+                v-if="this.$store.getters.getDarkMode"
+                dark
+                :items="getItems('Small Arms Facility')"
+                :fields="itemListFields"
+                class="align-middle"
+              >
+                <template #cell(icon)="data" class="align-middle">
+                  <img
+                    class="image mr-2 align-middle"
+                    v-bind:src="
+                      require(`./../assets/images/icons/${data.value}.png`)
+                    "
+                    :height="30"
+                  />
+                </template>
+
+                <template #cell(name)="data">
+                  {{ data.value }}
+                </template>
+
+                <template #cell(_id)="data">
+                  <div class="input-group align-middle">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder=""
+                      aria-label=""
+                      value=""
+                      :ref="data.value"
+                      :aria-describedby="data.value"
+                    />
+                    <div class="input-group-append">
+                      <span class="input-group-text"
+                        ><button
+                          class="btn btn-primary"
+                          v-on:click="addItemToArray(data)"
+                          type="button"
+                        >
+                          Add
+                        </button></span
+                      >
+                    </div>
+                  </div>
+                </template>
+              </b-table>
+              <b-table
+                striped
+                v-else
                 :items="getItems('Small Arms Facility')"
                 :fields="itemListFields"
                 class="align-middle"
@@ -513,6 +591,53 @@ export default {
             >
               <b-table
                 striped
+                dark
+                v-if="this.$store.getters.getDarkMode"
+                :items="getItems('Heavy Arms Facility')"
+                :fields="itemListFields"
+              >
+                <template #cell(icon)="data">
+                  <img
+                    class="image mr-2"
+                    v-bind:src="
+                      require(`./../assets/images/icons/${data.value}.png`)
+                    "
+                    :height="30"
+                  />
+                </template>
+
+                <template #cell(name)="data">
+                  {{ data.value }}
+                </template>
+
+                <template #cell(_id)="data">
+                  <div class="input-group align-middle">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder=""
+                      aria-label=""
+                      value=""
+                      :ref="data.value"
+                      :aria-describedby="data.value"
+                    />
+                    <div class="input-group-append">
+                      <span class="input-group-text"
+                        ><button
+                          class="btn btn-primary"
+                          v-on:click="addItemToArray(data)"
+                          type="button"
+                        >
+                          Add
+                        </button></span
+                      >
+                    </div>
+                  </div>
+                </template>
+              </b-table>
+              <b-table
+                striped
+                v-else
                 :items="getItems('Heavy Arms Facility')"
                 :fields="itemListFields"
               >
@@ -564,6 +689,53 @@ export default {
             >
               <b-table
                 striped
+                dark
+                v-if="this.$store.getters.getDarkMode"
+                :items="getItems('Utility Facility')"
+                :fields="itemListFields"
+              >
+                <template #cell(icon)="data">
+                  <img
+                    class="image mr-2"
+                    v-bind:src="
+                      require(`./../assets/images/icons/${data.value}.png`)
+                    "
+                    :height="30"
+                  />
+                </template>
+
+                <template #cell(name)="data">
+                  {{ data.value }}
+                </template>
+
+                <template #cell(_id)="data">
+                  <div class="input-group align-middle">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder=""
+                      aria-label=""
+                      value=""
+                      :ref="data.value"
+                      :aria-describedby="data.value"
+                    />
+                    <div class="input-group-append">
+                      <span class="input-group-text"
+                        ><button
+                          class="btn btn-primary"
+                          v-on:click="addItemToArray(data)"
+                          type="button"
+                        >
+                          Add
+                        </button></span
+                      >
+                    </div>
+                  </div>
+                </template>
+              </b-table>
+              <b-table
+                striped
+                v-else
                 :items="getItems('Utility Facility')"
                 :fields="itemListFields"
               >
@@ -615,6 +787,53 @@ export default {
             >
               <b-table
                 striped
+                dark
+                v-if="this.$store.getters.getDarkMode"
+                :items="getItems('Medical Facility')"
+                :fields="itemListFields"
+              >
+                <template #cell(icon)="data">
+                  <img
+                    class="image mr-2"
+                    v-bind:src="
+                      require(`./../assets/images/icons/${data.value}.png`)
+                    "
+                    :height="30"
+                  />
+                </template>
+
+                <template #cell(name)="data">
+                  {{ data.value }}
+                </template>
+
+                <template #cell(_id)="data">
+                  <div class="input-group align-middle">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder=""
+                      aria-label=""
+                      value=""
+                      :ref="data.value"
+                      :aria-describedby="data.value"
+                    />
+                    <div class="input-group-append">
+                      <span class="input-group-text"
+                        ><button
+                          class="btn btn-primary"
+                          v-on:click="addItemToArray(data)"
+                          type="button"
+                        >
+                          Add
+                        </button></span
+                      >
+                    </div>
+                  </div>
+                </template>
+              </b-table>
+              <b-table
+                v-else
+                striped
                 :items="getItems('Medical Facility')"
                 :fields="itemListFields"
               >
@@ -665,6 +884,53 @@ export default {
               aria-labelledby="pills-facilities-tab"
             >
               <b-table
+                v-if="this.$store.getters.getDarkMode"
+                dark
+                striped
+                :items="getItems('Supplies Facility')"
+                :fields="itemListFields"
+              >
+                <template #cell(icon)="data">
+                  <img
+                    class="image mr-2"
+                    v-bind:src="
+                      require(`./../assets/images/icons/${data.value}.png`)
+                    "
+                    :height="30"
+                  />
+                </template>
+
+                <template #cell(name)="data">
+                  {{ data.value }}
+                </template>
+
+                <template #cell(_id)="data">
+                  <div class="input-group align-middle">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder=""
+                      aria-label=""
+                      value=""
+                      :ref="data.value"
+                      :aria-describedby="data.value"
+                    />
+                    <div class="input-group-append">
+                      <span class="input-group-text"
+                        ><button
+                          class="btn btn-primary"
+                          v-on:click="addItemToArray(data)"
+                          type="button"
+                        >
+                          Add
+                        </button></span
+                      >
+                    </div>
+                  </div>
+                </template>
+              </b-table>
+              <b-table
+                v-else
                 striped
                 :items="getItems('Supplies Facility')"
                 :fields="itemListFields"
@@ -716,6 +982,53 @@ export default {
               aria-labelledby="pills-artillery-tab"
             >
               <b-table
+                v-if="this.$store.getters.getDarkMode"
+                dark
+                striped
+                :items="getItems('Artillery')"
+                :fields="vehicleFields"
+              >
+                <template #cell(icon)="data">
+                  <img
+                    class="image mr-2"
+                    v-bind:src="
+                      require(`./../assets/images/icons/${data.value}.png`)
+                    "
+                    :height="30"
+                  />
+                </template>
+
+                <template #cell(name)="data">
+                  {{ data.value }}
+                </template>
+
+                <template #cell(_id)="data">
+                  <div class="input-group align-middle">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder=""
+                      aria-label=""
+                      value=""
+                      :ref="data.value"
+                      :aria-describedby="data.value"
+                    />
+                    <div class="input-group-append">
+                      <span class="input-group-text"
+                        ><button
+                          class="btn btn-primary"
+                          v-on:click="addItemToArray(data)"
+                          type="button"
+                        >
+                          Add
+                        </button></span
+                      >
+                    </div>
+                  </div>
+                </template>
+              </b-table>
+              <b-table
+                v-else
                 striped
                 :items="getItems('Artillery')"
                 :fields="vehicleFields"
@@ -767,6 +1080,53 @@ export default {
               aria-labelledby="pills-garage-tab"
             >
               <b-table
+                v-if="this.$store.getters.getDarkMode"
+                dark
+                striped
+                :items="getItems('Garage')"
+                :fields="vehicleFields"
+              >
+                <template #cell(icon)="data">
+                  <img
+                    class="image mr-2"
+                    v-bind:src="
+                      require(`./../assets/images/icons/${data.value}.png`)
+                    "
+                    :height="30"
+                  />
+                </template>
+
+                <template #cell(name)="data">
+                  {{ data.value }}
+                </template>
+
+                <template #cell(_id)="data">
+                  <div class="input-group align-middle">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder=""
+                      aria-label=""
+                      value=""
+                      :ref="data.value"
+                      :aria-describedby="data.value"
+                    />
+                    <div class="input-group-append">
+                      <span class="input-group-text"
+                        ><button
+                          class="btn btn-primary"
+                          v-on:click="addItemToArray(data)"
+                          type="button"
+                        >
+                          Add
+                        </button></span
+                      >
+                    </div>
+                  </div>
+                </template>
+              </b-table>
+              <b-table
+                v-else
                 striped
                 :items="getItems('Garage')"
                 :fields="vehicleFields"

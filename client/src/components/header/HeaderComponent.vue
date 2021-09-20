@@ -1,5 +1,9 @@
 <style scoped>
 @import "./HeaderComponent.css";
+
+.page-subtitle.light-text {
+  color: #b1b1b1;
+}
 </style>
 
 <script>
@@ -39,7 +43,21 @@ export default {
     }
   },
   created() {},
-  computed: {},
+  computed: {
+    subTitleClass: function() {
+      return {
+        "text-uppercase": true,
+        "page-subtitle": true,
+        "light-text": this.$store.getters.getDarkMode ? true : false
+      };
+    },
+    pageTitleClass: function() {
+      return {
+        "page-title": true,
+        "text-white": this.$store.getters.getDarkMode ? true : false
+      };
+    }
+  },
   methods: {},
   watch: {}
 };
@@ -48,10 +66,10 @@ export default {
 <template>
   <div class="page-header row no-gutters py-4">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-      <span class="text-uppercase page-subtitle">{{
+      <span v-bind:class="subTitleClass">{{
         card ? "Request #" : "Dashboard"
       }}</span>
-      <h3 class="page-title">
+      <h3 v-bind:class="pageTitleClass">
         {{ card ? `1STRL-${requestId}` : this.pageTitle }}
       </h3>
     </div>

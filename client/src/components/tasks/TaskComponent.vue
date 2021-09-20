@@ -1,27 +1,17 @@
 <style scoped>
 @import "./TaskComponent.css";
 
-.task-dropdown ul li:hover,
-.task-dropdown ul li:focus {
-  background-color: rgb(0, 153, 255);
+.card-dark {
+  background-color: rgb(97, 97, 97);
 }
-
-.required-mats-text {
-  font-size: 1.5rem;
+.card-light-dark {
+  background-color: rgb(121, 121, 121);
 }
-
-.danger-task-enemy {
-  color: #ffffff;
-  background-color: #ff00009c !important;
-  border-radius: 5px;
-  -webkit-box-shadow: 0 0.46875rem 2.1875rem rgb(90 97 105 / 10%),
-    0 0.9375rem 1.40625rem rgb(90 97 105 / 10%),
-    0 0.25rem 0.53125rem rgb(90 97 105 / 12%),
-    0 0.125rem 0.1875rem rgb(90 97 105 / 10%);
-  box-shadow: 0 0.46875rem 2.1875rem rgb(90 97 105 / 10%),
-    0 0.9375rem 1.40625rem rgb(90 97 105 / 10%),
-    0 0.25rem 0.53125rem rgb(90 97 105 / 12%),
-    0 0.125rem 0.1875rem rgb(90 97 105 / 10%);
+.text-white {
+  color: white !important;
+}
+.dark-requested-at {
+  color: rgb(202, 202, 202) !important;
 }
 </style>
 
@@ -116,7 +106,11 @@ export default {
       let found = this.$store.getters.getItemsList.find(i => i.name === item);
       var img = "";
       try {
-        img = require(`./../../assets/images/icons/${found.icon}-dark.png`);
+        if (this.$store.getters.getDarkMode) {
+          img = require(`./../../assets/images/icons/${found.icon}.png`);
+        } else {
+          img = require(`./../../assets/images/icons/${found.icon}-dark.png`);
+        }
       } catch (err) {
         return;
       }
@@ -267,23 +261,84 @@ export default {
   },
   props: {
     task: Object
+  },
+  computed: {
+    cardClass: function() {
+      return {
+        card: true,
+        "card-small": true,
+        "card-post": true,
+        "mb-4": true,
+        "card-dark": this.$store.getters.getDarkMode ? true : false
+      };
+    },
+    smallCardClass: function() {
+      return {
+        card: true,
+        "card-post": true,
+        "mb-4": true,
+        "card-light-dark": this.$store.getters.getDarkMode ? true : false,
+        "text-white": this.$store.getters.getDarkMode ? true : false
+      };
+    },
+    cardHeaderClass: function() {
+      return {
+        "card-header": true,
+        "border-bottom": true,
+        "d-flex": true,
+        "mb-3": true,
+        "text-white": this.$store.getters.getDarkMode ? true : false,
+        "card-dark": this.$store.getters.getDarkMode ? true : false
+      };
+    },
+    requestedAtClass: function() {
+      return {
+        "text-muted": true,
+        "dark-requested-at": this.$store.getters.getDarkMode ? true : false
+      };
+    },
+    cardTitleClass: function() {
+      return {
+        "card-title": true,
+        "text-white": this.$store.getters.getDarkMode ? true : false
+      };
+    },
+    materialRowClass: function() {
+      return {
+        "d-flex": true,
+        "flex-row": true,
+        "align-content-center": true,
+        "text-white": this.$store.getters.getDarkMode ? true : false
+      };
+    },
+    basicMaterialSrc: function() {
+      let img;
+      if (this.$store.getters.getDarkMode) {
+        img = require("./../../assets/images/icons/Basic_Materials-large.png");
+      } else {
+        img = require("./../../assets/images/icons/Basic_Materials-largedark.png");
+      }
+      return img;
+    }
   }
 };
 </script>
 
 <template>
-  <div class="col-lg-" id="">
-    <div class="card card-small card-post mb-4">
+  <div v-bind:class="cardClass" id="">
+    <div class="">
       <div class="card-body text-left">
         <div class="container-fluid">
-          <div class="card-header border-bottom d-flex mb-3">
+          <div v-bind:class="cardHeaderClass">
             <div class="card-post__author d-flex">
               <div class="d-flex flex-column justify-content-center ml-3">
                 <span class="card-post__author-name">Requested By:</span>
                 <span class="card-post__author-name">{{
                   this.task.requestedBy
                 }}</span>
-                <small class="text-muted">{{ this.task.requestedAt }}</small>
+                <small v-bind:class="requestedAtClass">{{
+                  this.task.requestedAt
+                }}</small>
               </div>
             </div>
             <div class="my-auto ml-auto" v-if="task.status !== 'Completed'">
@@ -402,7 +457,7 @@ export default {
                 <b-button
                   v-if="this.isLeadership"
                   v-b-modal.delete-modal
-                  variant="outline-danger"
+                  variant="danger"
                   class="ml-2"
                   >Delete Request</b-button
                 >
@@ -454,7 +509,10 @@ export default {
             <div class="col-6">
               <HeaderComponent v-bind:card="true" :requestId="task.taskId" />
 
-              <h5 class="card-title" style="position: absolute; bottom: 45%;">
+              <h5
+                v-bind:class="cardTitleClass"
+                style="position: absolute; bottom: 45%;"
+              >
                 Request Status:
                 <b-badge
                   v-bind:variant="checkVariant(task.status)"
@@ -463,7 +521,10 @@ export default {
                   {{ task.status }}</b-badge
                 >
               </h5>
-              <h5 class="card-title" style="position: absolute; bottom: 30%;">
+              <h5
+                v-bind:class="cardTitleClass"
+                style="position: absolute; bottom: 30%;"
+              >
                 Logi Status:
                 <b-badge
                   v-bind:variant="checkVariant(task.logiStatus)"
@@ -472,7 +533,10 @@ export default {
                   {{ task.logiStatus }}</b-badge
                 >
               </h5>
-              <h5 class="card-title" style="position: absolute; bottom: 15%;">
+              <h5
+                v-bind:class="cardTitleClass"
+                style="position: absolute; bottom: 15%;"
+              >
                 Precedence:
                 <b-badge
                   v-bind:variant="checkPrecedence(task.precedence)"
@@ -481,7 +545,10 @@ export default {
                   {{ task.precedence }}</b-badge
                 >
               </h5>
-              <h5 class="card-title" style="position: absolute; bottom: 0;">
+              <h5
+                v-bind:class="cardTitleClass"
+                style="position: absolute; bottom: 0;"
+              >
                 Member(s) Assigned:
                 <span class="assigned-members">
                   {{
@@ -493,8 +560,10 @@ export default {
               </h5>
             </div>
             <div class="col-6 text-center">
-              <h5 class="card-title">Location: {{ task.location }}</h5>
-              <h5 class="card-title">Region: {{ task.region }}</h5>
+              <h5 v-bind:class="cardTitleClass">
+                Location: {{ task.location }}
+              </h5>
+              <h5 v-bind:class="cardTitleClass">Region: {{ task.region }}</h5>
               <CoolLightBox
                 :items="task_image"
                 :index="index"
@@ -533,7 +602,13 @@ export default {
             {{ this.status_value }}% Complete
           </div>
         </div>
-        <b-table striped hover sticky-header="450px" :items="task.items">
+        <!-- ########################## ITEM TABLE ########################## -->
+        <b-table
+          v-if="this.$store.getters.getDarkMode"
+          dark
+          sticky-header="450px"
+          :items="task.items"
+        >
           <template #cell(item)="data">
             <img
               class="image mr-2"
@@ -542,15 +617,33 @@ export default {
             />{{ data.value }}
           </template>
         </b-table>
-        <div class="d-flex flex-row align-content-center">
+        <b-table v-else sticky-header="450px" :items="task.items">
+          <template #cell(item)="data">
+            <img
+              class="image mr-2"
+              v-bind:src="getIcon(data.value)"
+              :height="30"
+            />{{ data.value }}
+          </template>
+        </b-table>
+        <!-- ########################## /ITEM TABLE ########################## -->
+        <div v-bind:class="materialRowClass">
           <div v-if="this.bmats > 0" class="col text-center">
-            <b-card
-              title="Basic Materials Required"
-              header-tag="header"
-              footer-tag="footer"
-            >
+            <b-card :class="smallCardClass" footer-tag="footer">
+              <h4 v-bind:class="cardTitleClass" style="">
+                Basic Materails Required
+              </h4>
               <img
                 class="image mr-2"
+                v-if="this.$store.getters.getDarkMode"
+                v-bind:src="
+                  require('./../../assets/images/icons/Basic_Materials-large.png')
+                "
+                :height="50"
+              />
+              <img
+                class="image mr-2"
+                v-else
                 v-bind:src="
                   require('./../../assets/images/icons/Basic_Materials-largedark.png')
                 "
@@ -563,9 +656,21 @@ export default {
             </b-card>
           </div>
           <div v-if="this.emats > 0" class="col text-center">
-            <b-card title="Explosive Materials Required">
+            <b-card :class="smallCardClass">
+              <h4 v-bind:class="cardTitleClass" style="">
+                Explosive Materials Required
+              </h4>
               <img
                 class="image mr-2"
+                v-if="this.$store.getters.getDarkMode"
+                v-bind:src="
+                  require('./../../assets/images/icons/Explosive_Materials-large.png')
+                "
+                :height="50"
+              />
+              <img
+                class="image mr-2"
+                v-else
                 v-bind:src="
                   require('./../../assets/images/icons/Explosive_Materials-largedark.png')
                 "
@@ -578,9 +683,21 @@ export default {
             </b-card>
           </div>
           <div v-if="this.hmats > 0" class="col text-center">
-            <b-card title="Heavy Explosive Materials Required">
+            <b-card :class="smallCardClass">
+              <h4 v-bind:class="cardTitleClass" style="">
+                Heavy Explosive Materials Required
+              </h4>
               <img
                 class="image mr-2"
+                v-if="this.$store.getters.getDarkMode"
+                v-bind:src="
+                  require('./../../assets/images/icons/HeavyExplosiveMaterialIcon-large.png')
+                "
+                :height="50"
+              />
+              <img
+                class="image mr-2"
+                v-else
                 v-bind:src="
                   require('./../../assets/images/icons/HeavyExplosiveMaterialIcon-largedark.png')
                 "
@@ -593,9 +710,21 @@ export default {
             </b-card>
           </div>
           <div v-if="this.rmats > 0" class="col text-center">
-            <b-card title="Refined Materials Required">
+            <b-card :class="smallCardClass">
+              <h4 v-bind:class="cardTitleClass" style="">
+                Refined Materials Required
+              </h4>
               <img
                 class="image mr-2"
+                v-if="this.$store.getters.getDarkMode"
+                v-bind:src="
+                  require('./../../assets/images/icons/Refined_Materials-large.png')
+                "
+                :height="50"
+              />
+              <img
+                class="image mr-2"
+                v-else
                 v-bind:src="
                   require('./../../assets/images/icons/Refined_Materials-largedark.png')
                 "
