@@ -631,7 +631,7 @@ export default {
           <div v-if="this.bmats > 0" class="col text-center">
             <b-card :class="smallCardClass" footer-tag="footer">
               <h4 v-bind:class="cardTitleClass" style="">
-                Basic Materails Required
+                Basic Materials Required
               </h4>
               <img
                 class="image mr-2"

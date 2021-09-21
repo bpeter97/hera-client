@@ -20,7 +20,10 @@ export default new Vuex.Store({
     regions: {
       list: []
     },
-    count: 0
+    events: {
+      list: [],
+      single: {}
+    }
   },
   mutations: {
     setAuthToken(state, data) {
@@ -40,6 +43,12 @@ export default new Vuex.Store({
     },
     setItemsList(state, list) {
       state.items.list = list;
+    },
+    setEventsList(state, list) {
+      state.events.list = list;
+    },
+    setEvent(state, event) {
+      state.events.single = event;
     },
     setRegionsList(state, list) {
       state.regions.list = list;
@@ -75,6 +84,12 @@ export default new Vuex.Store({
     setRegionsList({ commit }, data) {
       commit("setRegionsList", data);
     },
+    setEventsList({ commit }, data) {
+      commit("setEventsList", data);
+    },
+    setEvent({ commit }, data) {
+      commit("setEvent", data);
+    },
     error({ commit }, data) {
       commit("error", data);
     },
@@ -101,6 +116,12 @@ export default new Vuex.Store({
     },
     getItemsList: state => {
       return state.items.list;
+    },
+    getEventsList: state => {
+      return state.events.list;
+    },
+    getEventInfo: state => {
+      return state.events.single;
     },
     getRegionsList: state => {
       return state.regions.list;

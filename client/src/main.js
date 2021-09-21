@@ -35,7 +35,6 @@ Vue.use(
     connection: io("https://hera-tasks.herokuapp.com/")
   })
 );
-
 Vue.use(BootstrapVue);
 Vue.use(CoolLightBox);
 Vue.config.productionTip = false;
