@@ -76,6 +76,7 @@ export default {
   ready() {},
   data() {
     return {
+      isRecruit: true,
       counters: {
         totalOpen: 0,
         totalPending: 0,
@@ -209,18 +210,17 @@ export default {
     createRequest() {
       this.$router.push("/logistics-requests/new");
     },
-    checkRecruit(roles) {
+    checkRecruit() {
       // reverse boolean to hide if they are a recruit.
-      let isNotARecruit = true;
-      roles.forEach(role => {
+      this.$store.getters.getUserRoles.forEach(role => {
         if (role === "Recruit") {
-          isNotARecruit = false;
+          this.isRecruit = false;
         }
       });
-      return isNotARecruit;
     }
   },
   created() {
+    this.checkRecruit();
     this.getAllTasks().then(() => {
       this.calculateCounters();
     });
@@ -231,10 +231,7 @@ export default {
 
 <template>
   <div class="task-tables-component">
-    <div
-      class="text-left mb-3"
-      v-if="checkRecruit(this.$store.getters.getUserRoles)"
-    >
+    <div class="text-left mb-3" v-if="isRecruit">
       <!-- <div class="text-left mb-3"> -->
       <b-button
         size="lg"

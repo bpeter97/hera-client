@@ -455,7 +455,7 @@ export default {
                 </b-dropdown>
 
                 <b-button
-                  v-if="this.isLeadership"
+                  v-if="this.$store.getters.isLeadership"
                   v-b-modal.delete-modal
                   variant="danger"
                   class="ml-2"

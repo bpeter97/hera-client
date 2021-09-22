@@ -11,6 +11,7 @@ export default new Vuex.Store({
     auth: "",
     loggedIn: false,
     user: {
+      isLeadership: false,
       info: {},
       guilds: {}
     },
@@ -56,6 +57,9 @@ export default new Vuex.Store({
     increment(state) {
       state.count++;
     },
+    setLeadership(state, bool) {
+      state.user.isLeadership = bool;
+    },
     logout: state => {
       state.loggedIn = false;
       state.auth = "";
@@ -77,6 +81,9 @@ export default new Vuex.Store({
     },
     logout({ commit }) {
       commit("logout");
+    },
+    setLeadership({ commit }, bool) {
+      commit("setLeadership", bool);
     },
     setItemsList({ commit }, data) {
       commit("setItemsList", data);
@@ -100,6 +107,9 @@ export default new Vuex.Store({
   getters: {
     isLoggedIn: state => {
       return state.loggedIn;
+    },
+    isLeadership: state => {
+      return state.user.isLeadership;
     },
     getAuth: state => {
       return state.auth;

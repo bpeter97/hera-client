@@ -86,6 +86,23 @@ export default {
       let userInfo = await AuthService.getUserInfo(this.$route.query.d);
       this.$store.dispatch("auth", this.$route.query.d);
       this.$store.dispatch("login", userInfo);
+      this.setLeadership(userInfo);
+    },
+    setLeadership(userInfo) {
+      let leadership = [
+        "Hermes Company Leadership",
+        "Ares Company Leadership",
+        "Hades Company Leadership",
+        "Hermes Company Command",
+        "Ares Company Command",
+        "Hades Company Command",
+        "Regiment Command"
+      ];
+      userInfo.roles.forEach(role => {
+        if (leadership.includes(role)) {
+          this.$store.dispatch("setLeadership", true);
+        }
+      });
     }
   },
   mounted() {},

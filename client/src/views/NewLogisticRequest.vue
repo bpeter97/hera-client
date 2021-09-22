@@ -145,7 +145,9 @@ export default {
       }
     },
     checkState(x) {
-      return this[x].length >= 3;
+      {
+        return this[x].length >= 3;
+      }
     },
     invalidFeedback(x) {
       if (this[x].length > 0) {
@@ -177,16 +179,24 @@ export default {
       });
     },
     addItemToArray(data) {
-      let newItem = {
-        item: data.item.name,
-        quantity: this.$refs[data.value].value,
-        type:
-          data.item.category === "Garage" || data.item.category === "Artillery"
-            ? "units"
-            : "crates"
-      };
+      if (
+        this.$refs[data.value].value < 30 &&
+        this.$refs[data.value].value > 1
+      ) {
+        let newItem = {
+          item: data.item.name,
+          quantity: this.$refs[data.value].value,
+          type:
+            data.item.category === "Garage" ||
+            data.item.category === "Artillery"
+              ? "units"
+              : "crates"
+        };
 
-      this.addedItems.push(newItem);
+        this.addedItems.push(newItem);
+      } else {
+        return alert("You must enter a value betweel 1 and 30.");
+      }
     }
   },
   mounted() {},
@@ -517,6 +527,8 @@ export default {
                       type="number"
                       class="form-control"
                       placeholder=""
+                      max="30"
+                      min="1"
                       aria-label=""
                       value=""
                       :ref="data.value"
@@ -563,6 +575,8 @@ export default {
                       type="number"
                       class="form-control"
                       placeholder=""
+                      max="30"
+                      min="1"
                       aria-label=""
                       value=""
                       :ref="data.value"
@@ -615,6 +629,8 @@ export default {
                     <input
                       type="number"
                       class="form-control"
+                      max="30"
+                      min="1"
                       placeholder=""
                       aria-label=""
                       value=""
@@ -660,6 +676,8 @@ export default {
                     <input
                       type="number"
                       class="form-control"
+                      max="30"
+                      min="1"
                       placeholder=""
                       aria-label=""
                       value=""
@@ -715,6 +733,8 @@ export default {
                       class="form-control"
                       placeholder=""
                       aria-label=""
+                      max="30"
+                      min="1"
                       value=""
                       :ref="data.value"
                       :aria-describedby="data.value"
@@ -760,6 +780,8 @@ export default {
                       class="form-control"
                       placeholder=""
                       aria-label=""
+                      max="30"
+                      min="1"
                       value=""
                       :ref="data.value"
                       :aria-describedby="data.value"
@@ -811,6 +833,8 @@ export default {
                     <input
                       type="number"
                       class="form-control"
+                      max="30"
+                      min="1"
                       placeholder=""
                       aria-label=""
                       value=""
@@ -856,6 +880,8 @@ export default {
                     <input
                       type="number"
                       class="form-control"
+                      max="30"
+                      min="1"
                       placeholder=""
                       aria-label=""
                       value=""
@@ -909,6 +935,8 @@ export default {
                     <input
                       type="number"
                       class="form-control"
+                      max="30"
+                      min="1"
                       placeholder=""
                       aria-label=""
                       value=""
@@ -955,6 +983,8 @@ export default {
                       type="number"
                       class="form-control"
                       placeholder=""
+                      max="30"
+                      min="1"
                       aria-label=""
                       value=""
                       :ref="data.value"
@@ -1008,6 +1038,8 @@ export default {
                       type="number"
                       class="form-control"
                       placeholder=""
+                      max="30"
+                      min="1"
                       aria-label=""
                       value=""
                       :ref="data.value"
@@ -1053,6 +1085,8 @@ export default {
                       type="number"
                       class="form-control"
                       placeholder=""
+                      max="30"
+                      min="1"
                       aria-label=""
                       value=""
                       :ref="data.value"
@@ -1107,6 +1141,8 @@ export default {
                       class="form-control"
                       placeholder=""
                       aria-label=""
+                      max="30"
+                      min="1"
                       value=""
                       :ref="data.value"
                       :aria-describedby="data.value"
@@ -1152,6 +1188,8 @@ export default {
                       class="form-control"
                       placeholder=""
                       aria-label=""
+                      max="30"
+                      min="1"
                       value=""
                       :ref="data.value"
                       :aria-describedby="data.value"
