@@ -29,6 +29,7 @@ export default {
   },
   data() {
     return {
+      task: this.propTask,
       bmats: 0,
       hmats: 0,
       emats: 0,
@@ -260,7 +261,12 @@ export default {
     }
   },
   props: {
-    task: Object
+    propTask: Object
+  },
+  mounted() {
+    this.sockets.subscribe("task-change", t => {
+      this.task = t.task;
+    });
   },
   computed: {
     cardClass: function() {

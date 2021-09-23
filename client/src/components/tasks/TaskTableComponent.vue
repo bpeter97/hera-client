@@ -42,6 +42,7 @@ export default {
             id: t.task.taskId,
             show: true
           });
+          this.$forceUpdate();
           break;
         }
         case "DELETE": {
@@ -54,6 +55,7 @@ export default {
             id: t.task.taskId,
             show: true
           });
+          this.$forceUpdate();
           break;
         }
         case "PATCH": {
@@ -64,11 +66,12 @@ export default {
             let propName = updateProps[i];
 
             if (t.task[propName] !== this.tasks[oldIndex].propName) {
-              this.tasks[oldIndex].propName = t.task[propName];
+              this.tasks[oldIndex][propName] = t.task[propName];
             }
           }
 
           this.calculateCounters();
+          this.$forceUpdate();
         }
       }
     });
@@ -270,7 +273,7 @@ export default {
             hover
             v-if="this.$store.getters.getDarkMode"
             dark
-            :items="getTasks('Pending')"
+            :items="tasks.filter(task => task.status === 'Pending')"
             :fields="pendingItemFields"
           >
             <template #cell(enemyActivity)="data">
@@ -290,14 +293,14 @@ export default {
             </template>
 
             <template #row-details="row">
-              <TaskComponent :task="row.item" :taskId="row.taskId" />
+              <TaskComponent :propTask="row.item" :taskId="row.taskId" />
             </template>
           </b-table>
           <b-table
             striped
             hover
             v-else
-            :items="getTasks('Pending')"
+            :items="tasks.filter(task => task.status === 'Pending')"
             :fields="pendingItemFields"
           >
             <template #cell(enemyActivity)="data">
@@ -317,7 +320,7 @@ export default {
             </template>
 
             <template #row-details="row">
-              <TaskComponent :task="row.item" :taskId="row.taskId" />
+              <TaskComponent :propTask="row.item" :taskId="row.taskId" />
             </template>
           </b-table>
         </b-tab>
@@ -327,7 +330,7 @@ export default {
             hover
             v-if="this.$store.getters.getDarkMode"
             dark
-            :items="getTasks('Accepted')"
+            :items="tasks.filter(task => task.status === 'Accepted')"
             :fields="acceptedItemFields"
           >
             <template #cell(enemyActivity)="data">
@@ -354,7 +357,7 @@ export default {
             striped
             hover
             v-else
-            :items="getTasks('Accepted')"
+            :items="tasks.filter(task => task.status === 'Accepted')"
             :fields="acceptedItemFields"
           >
             <template #cell(enemyActivity)="data">
@@ -383,7 +386,7 @@ export default {
             hover
             v-if="this.$store.getters.getDarkMode"
             dark
-            :items="getTasks('Completed')"
+            :items="tasks.filter(task => task.status === 'Completed')"
             :fields="acceptedItemFields"
           >
             <template #cell(enemyActivity)="data">
@@ -403,14 +406,14 @@ export default {
             </template>
 
             <template #row-details="row">
-              <TaskComponent :task="row.item" />
+              <TaskComponent :propTask="row.item" />
             </template>
           </b-table>
           <b-table
             striped
             hover
             v-else
-            :items="getTasks('Completed')"
+            :items="tasks.filter(task => task.status === 'Completed')"
             :fields="acceptedItemFields"
           >
             <template #cell(enemyActivity)="data">
@@ -430,7 +433,7 @@ export default {
             </template>
 
             <template #row-details="row">
-              <TaskComponent :task="row.item" />
+              <TaskComponent :propTask="row.item" />
             </template>
           </b-table>
         </b-tab>

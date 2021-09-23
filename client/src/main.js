@@ -33,6 +33,7 @@ Vue.use(
   new VueSocketIO({
     debug: true,
     connection: io("https://hera-tasks.herokuapp.com/")
+    // connection: io("http://localhost:5000/")
   })
 );
 Vue.use(BootstrapVue);
