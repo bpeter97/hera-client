@@ -350,7 +350,7 @@ export default {
             </template>
 
             <template #row-details="row">
-              <TaskComponent :task="row.item" />
+              <TaskComponent :propTask="row.item" />
             </template>
           </b-table>
           <b-table
@@ -377,7 +377,7 @@ export default {
             </template>
 
             <template #row-details="row">
-              <TaskComponent :task="row.item" />
+              <TaskComponent :propTask="row.item" />
             </template> </b-table
         ></b-tab>
         <b-tab title="Completed Requests">
