@@ -1,3 +1,5 @@
+const ENV = "development";
+
 const taskStatus = {
   PENDING: "Pending",
   COMPLETED: "Completed",
@@ -21,4 +23,4 @@ const precedence = {
   CRITICAL: "Critical"
 };
 
-module.exports = { taskStatus, logiStatus, precedence };
+module.exports = { ENV, taskStatus, logiStatus, precedence };

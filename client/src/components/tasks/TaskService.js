@@ -1,6 +1,12 @@
 import axios from "axios";
+import { ENV } from "./../../utils/enums";
 
-const url = "https://hera-tasks.herokuapp.com/api";
+var url;
+if (ENV === "development") {
+  url = "http://localhost:5000/api";
+} else {
+  url = "https://hera-tasks.herokuapp.com/api";
+}
 
 class TaskService {
   // Get all tasks

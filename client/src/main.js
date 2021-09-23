@@ -6,6 +6,7 @@ import BootstrapVue from "bootstrap-vue/dist/bootstrap-vue.esm";
 import "bootstrap/dist/css/bootstrap.css";
 import "./assets/css/dashboard.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+import { ENV } from "./utils/enums";
 
 // socket io
 import * as io from "socket.io-client";
@@ -29,13 +30,22 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import CoolLightBox from "vue-cool-lightbox";
 import "vue-cool-lightbox/dist/vue-cool-lightbox.min.css";
 
-Vue.use(
-  new VueSocketIO({
-    debug: true,
-    connection: io("https://hera-tasks.herokuapp.com/")
-    // connection: io("http://localhost:5000/")
-  })
-);
+if (ENV === "development") {
+  Vue.use(
+    new VueSocketIO({
+      debug: true,
+      connection: io("http://localhost:5000/")
+    })
+  );
+} else {
+  Vue.use(
+    new VueSocketIO({
+      debug: true,
+      connection: io("https://hera-tasks.herokuapp.com/")
+    })
+  );
+}
+
 Vue.use(BootstrapVue);
 Vue.use(CoolLightBox);
 Vue.config.productionTip = false;
