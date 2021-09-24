@@ -29,6 +29,15 @@ export default {
   },
   data() {
     return {
+      assignee: "",
+      unassignee: "",
+      assignMemberModal: false,
+      pendingBtnShow: false,
+      acceptBtnShow: false,
+      cookingBtnShow: false,
+      shippingBtnShow: false,
+      deliveringBtnShow: false,
+      completeBtnShow: false,
       task: this.propTask,
       bmats: 0,
       hmats: 0,
@@ -42,6 +51,11 @@ export default {
       isHermes: false,
       isLeadership: false
     };
+  },
+  watch: {
+    task: function(val) {
+      this.checkButtonVisibility(val);
+    }
   },
   created() {
     let tempRegion = this.$store.getters.getRegionsList.find(
@@ -73,6 +87,8 @@ export default {
       }
     });
 
+    this.checkButtonVisibility(this.task);
+
     switch (this.task.logiStatus) {
       case logiStatus.PENDING:
         this.status_value = 0;
@@ -103,6 +119,37 @@ export default {
     }
   },
   methods: {
+    checkButtonVisibility(task) {
+      if (task.status === "Pending") {
+        this.pendingBtnShow = false;
+        this.acceptBtnShow = true;
+        this.cookingBtnShow = false;
+        this.shippingBtnShow = false;
+        this.delayedBtnShow = false;
+        this.deliveringBtnShow = false;
+        this.completeBtnShow = false;
+      } else if (task.status === "Accepted") {
+        this.pendingBtnShow = true;
+        this.acceptBtnShow = false;
+        this.cookingBtnShow = true;
+        this.delayedBtnShow = true;
+        this.shippingBtnShow = true;
+        this.deliveringBtnShow = true;
+        this.completeBtnShow = true;
+      }
+    },
+    acceptRequest() {
+      // change status and logiStatus to accepted
+      (this.task.status = "Accepted"), (this.task.logiStatus = "Accepted");
+
+      TaskService.updateTask(this.task);
+    },
+    completeRequest() {
+      // change status and logiStatus to accepted
+      (this.task.status = "Completed"), (this.task.logiStatus = "Completed");
+
+      TaskService.updateTask(this.task);
+    },
     getIcon(item) {
       let found = this.$store.getters.getItemsList.find(i => i.name === item);
       var img = "";
@@ -253,6 +300,21 @@ export default {
       task.assignedTo.push(this.$store.getters.getUsername);
       TaskService.updateTask(task);
     },
+    assignMember() {
+      this.task.assignedTo.push(this.assignee);
+      this.$bvModal.hide("assign-member");
+      TaskService.updateTask(this.task);
+    },
+    unassignMember() {
+      this.task.assignedTo = this.task.assignedTo.filter(
+        ar => ar != this.unassignee
+      );
+      this.$bvModal.hide("unassign-member");
+      TaskService.updateTask(this.task);
+    },
+    showModal(name) {
+      this.$bvModal.show(name);
+    },
     unassignSelf(task) {
       task.assignedTo = task.assignedTo.filter(user => {
         return user !== this.$store.getters.getUsername;
@@ -349,75 +411,92 @@ export default {
             </div>
             <div class="my-auto ml-auto" v-if="task.status !== 'Completed'">
               <div v-if="this.isHermes || this.isLeadership">
+                <b-button
+                  class="mx-2"
+                  v-if="acceptBtnShow"
+                  variant="primary"
+                  v-on:click="acceptRequest()"
+                >
+                  Accept Request
+                </b-button>
+                <b-button
+                  class="mx-2"
+                  v-if="pendingBtnShow"
+                  variant="warning"
+                  v-on:click="updateStatus(task, 'Pending')"
+                >
+                  Revert to Pending
+                </b-button>
+                <b-button
+                  class="mx-2"
+                  v-if="delayedBtnShow"
+                  variant="warning"
+                  v-on:click="updateLogiStatus(task, 'Delayed')"
+                >
+                  Delayed
+                </b-button>
+                <b-button
+                  class="mx-2"
+                  v-if="cookingBtnShow"
+                  variant="primary"
+                  v-on:click="updateLogiStatus(task, 'Cooking')"
+                >
+                  Cooking
+                </b-button>
+                <b-button
+                  class="mx-2"
+                  v-if="shippingBtnShow"
+                  variant="primary"
+                  v-on:click="updateLogiStatus(task, 'Shipping')"
+                >
+                  Shipping
+                </b-button>
+                <b-button
+                  class="mx-2"
+                  v-if="deliveringBtnShow"
+                  variant="primary"
+                  v-on:click="updateLogiStatus(task, 'Delivering')"
+                >
+                  Delivering
+                </b-button>
+                <b-button
+                  class="mx-2"
+                  v-if="completeBtnShow"
+                  variant="success"
+                  v-on:click="completeRequest()"
+                >
+                  Completed
+                </b-button>
+
                 <b-dropdown
                   id="dropdown-right"
                   right
-                  text="Update Request Status"
+                  text="Assignment"
                   variant="primary"
                   class="m-2 task-dropdown"
+                  v-if="task.status === 'Accepted'"
                 >
-                  <b-dropdown-item
-                    href="#"
-                    v-on:click="updateStatus(task, 'Pending')"
-                    >Change to "Pending"</b-dropdown-item
+                  <b-dropdown-item href="#" @click="assignSelf(task)"
+                    >Assign Self</b-dropdown-item
                   >
                   <b-dropdown-item
-                    href="#"
-                    v-on:click="updateStatus(task, 'Accepted')"
-                    >Change to "Accepted"</b-dropdown-item
+                    v-if="this.$store.getters.isLeadership"
+                    v-on:click="showModal('assign-member')"
+                    >Assign Member</b-dropdown-item
                   >
                   <b-dropdown-item
-                    href="#"
-                    v-on:click="updateStatus(task, 'Completed')"
-                    >Change to "Completed"</b-dropdown-item
+                    v-if="this.$store.getters.isLeadership"
+                    v-on:click="showModal('unassign-member')"
+                    >Unassign Member</b-dropdown-item
+                  >
+                  <b-dropdown-item href="#" @click="unassignSelf(task)"
+                    >Unassign Self</b-dropdown-item
                   >
                 </b-dropdown>
 
                 <b-dropdown
                   id="dropdown-right"
-                  right
-                  text="Update Logi Status"
-                  variant="primary"
-                  class="m-1 task-dropdown"
-                >
-                  <b-dropdown-item
-                    href="#"
-                    v-on:click="updateLogiStatus(task, 'Pending')"
-                    >Change to "Pending"</b-dropdown-item
-                  >
-                  <b-dropdown-item
-                    href="#"
-                    v-on:click="updateLogiStatus(task, 'Accepted')"
-                    >Change to "Accepted"</b-dropdown-item
-                  >
-                  <b-dropdown-item
-                    href="#"
-                    v-on:click="updateLogiStatus(task, 'Cooking')"
-                    >Change to "Cooking"</b-dropdown-item
-                  >
-                  <b-dropdown-item
-                    href="#"
-                    v-on:click="updateLogiStatus(task, 'Shipping')"
-                    >Change to "Shipping"</b-dropdown-item
-                  >
-                  <b-dropdown-item
-                    href="#"
-                    v-on:click="updateLogiStatus(task, 'Delivering')"
-                    >Change to "Delivering"</b-dropdown-item
-                  >
-                  <b-dropdown-item
-                    href="#"
-                    v-on:click="updateLogiStatus(task, 'Delayed')"
-                    >Change to "Delayed"</b-dropdown-item
-                  >
-                  <b-dropdown-item
-                    href="#"
-                    v-on:click="updateLogiStatus(task, 'Completed')"
-                    >Change to "Completed"</b-dropdown-item
-                  >
-                </b-dropdown>
-                <b-dropdown
-                  id="dropdown-right"
+                  v-if="this.$store.getters.isLeadership"
                   right
                   text="Update Precedence"
                   variant="primary"
@@ -442,21 +521,6 @@ export default {
                     href="#"
                     v-on:click="updateTaskPrecedence(task, 'Critical')"
                     >Change to "Critical"</b-dropdown-item
-                  >
-                </b-dropdown>
-
-                <b-dropdown
-                  id="dropdown-right"
-                  right
-                  text="Assignment"
-                  variant="primary"
-                  class="m-2 task-dropdown"
-                >
-                  <b-dropdown-item href="#" @click="assignSelf(task)"
-                    >Assign Self</b-dropdown-item
-                  >
-                  <b-dropdown-item href="#" @click="unassignSelf(task)"
-                    >Unassign Self</b-dropdown-item
                   >
                 </b-dropdown>
 
@@ -489,6 +553,64 @@ export default {
                           @click="deleteTask(task)"
                         >
                           Delete
+                        </b-button>
+                      </div>
+                    </template>
+                  </b-modal>
+                  <b-modal centered id="assign-member" title="Assign Member">
+                    <p class="my-4">
+                      Who would you like to assign to the task?
+                    </p>
+                    <b-form-input
+                      v-model="assignee"
+                      placeholder="Enter their discord name (e.g. SSgt Critinator)"
+                    ></b-form-input>
+                    <template #modal-footer>
+                      <div class="w-100">
+                        <b-button
+                          variant="primary"
+                          class="float-left"
+                          @click="$bvModal.hide('assign-member')"
+                        >
+                          Cancel
+                        </b-button>
+                        <b-button
+                          variant="success"
+                          class="float-right"
+                          @click="assignMember()"
+                        >
+                          Assign
+                        </b-button>
+                      </div>
+                    </template>
+                  </b-modal>
+                  <b-modal
+                    centered
+                    id="unassign-member"
+                    title="Unassign Member"
+                  >
+                    <p class="my-4">
+                      Who would you like to remove from the task?
+                    </p>
+                    <b-form-input
+                      v-model="unassignee"
+                      placeholder="Enter their name."
+                    ></b-form-input>
+                    <template #modal-footer>
+                      <div class="w-100">
+                        <b-button
+                          variant="primary"
+                          class="float-left"
+                          @click="$bvModal.hide('unassign-member')"
+                        >
+                          Cancel
+                        </b-button>
+                        <b-button
+                          variant="success"
+                          class="float-right"
+                          @click="unassignMember()"
+                        >
+                          Unassign
                         </b-button>
                       </div>
                     </template>

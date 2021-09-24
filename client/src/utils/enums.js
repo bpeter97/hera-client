@@ -8,7 +8,6 @@ const taskStatus = {
 
 const logiStatus = {
   PENDING: "Pending",
-  ACCEPTED: "Accepted",
   COOKING: "Cooking",
   SHIPPING: "Shipping",
   DELIVERING: "Delivering",

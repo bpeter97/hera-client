@@ -106,7 +106,7 @@ export default {
         },
         {
           key: "precedence",
-          label: "Precendence",
+          label: "Precedence",
           sortable: true
         },
         "status",
@@ -134,7 +134,7 @@ export default {
         },
         {
           key: "precedence",
-          label: "Precendence",
+          label: "Precedence",
           sortable: true
         },
         "status",

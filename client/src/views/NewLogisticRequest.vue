@@ -451,7 +451,26 @@ export default {
                 <img
                   class="image"
                   v-bind:src="
-                    require('./../assets/images/icons/FacilitiesSuppliesIcon.png')
+                    require('./../assets/images/icons/FacilitiesResourceIcon.png')
+                  "
+                  :height="45"
+                />
+              </a>
+            </li>
+            <li class="nav-item mr-1">
+              <a
+                class="nav-link text-center facility-button"
+                id="pills-uniforms-tab"
+                data-toggle="pill"
+                href="#pills-uniforms"
+                role="tab"
+                aria-controls="pills-uniforms"
+                aria-selected="true"
+              >
+                <img
+                  class="image"
+                  v-bind:src="
+                    require('./../assets/images/icons/FacilitiesUniformsIcon.png')
                   "
                   :height="45"
                 />
@@ -597,6 +616,111 @@ export default {
                 </template>
               </b-table>
             </div>
+            <div
+              class="tab-pane fade"
+              id="pills-uniforms"
+              role="tabpanel"
+              aria-labelledby="#pills-uniforms-tab"
+            >
+              <b-table
+                striped
+                v-if="this.$store.getters.getDarkMode"
+                dark
+                :items="getItems('Uniform Facility')"
+                :fields="itemListFields"
+                class="align-middle"
+              >
+                <template #cell(icon)="data" class="align-middle">
+                  <img
+                    class="image mr-2 align-middle"
+                    v-bind:src="
+                      require(`./../assets/images/icons/${data.value}.png`)
+                    "
+                    :height="30"
+                  />
+                </template>
+
+                <template #cell(name)="data">
+                  {{ data.value }}
+                </template>
+
+                <template #cell(_id)="data">
+                  <div class="input-group align-middle">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder=""
+                      max="30"
+                      min="0"
+                      aria-label=""
+                      value=""
+                      :ref="data.value"
+                      :aria-describedby="data.value"
+                    />
+                    <div class="input-group-append">
+                      <span class="input-group-text"
+                        ><button
+                          class="btn btn-primary"
+                          v-on:click="addItemToArray(data)"
+                          type="button"
+                        >
+                          Add
+                        </button></span
+                      >
+                    </div>
+                  </div>
+                </template>
+              </b-table>
+              <b-table
+                striped
+                v-else
+                :items="getItems('Uniform Facility')"
+                :fields="itemListFields"
+                class="align-middle"
+              >
+                <template #cell(icon)="data" class="align-middle">
+                  <img
+                    class="image mr-2 align-middle"
+                    v-bind:src="
+                      require(`./../assets/images/icons/${data.value}-dark.png`)
+                    "
+                    :height="30"
+                  />
+                </template>
+
+                <template #cell(name)="data">
+                  {{ data.value }}
+                </template>
+
+                <template #cell(_id)="data">
+                  <div class="input-group align-middle">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder=""
+                      max="30"
+                      min="0"
+                      aria-label=""
+                      value=""
+                      :ref="data.value"
+                      :aria-describedby="data.value"
+                    />
+                    <div class="input-group-append">
+                      <span class="input-group-text"
+                        ><button
+                          class="btn btn-primary"
+                          v-on:click="addItemToArray(data)"
+                          type="button"
+                        >
+                          Add
+                        </button></span
+                      >
+                    </div>
+                  </div>
+                </template>
+              </b-table>
+            </div>
+
             <div
               class="tab-pane fade"
               id="pills-heavyweapons"
