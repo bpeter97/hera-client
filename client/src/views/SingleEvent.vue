@@ -7,6 +7,40 @@
         :subString="this.event.date"
       />
       <div class="col-mb-12">
+        <div class="row">
+          <b-button
+            v-if="!isRegistered"
+            type="button"
+            variant="primary"
+            class="ml-3"
+            v-on:click="registerForEvent()"
+            >Register for Event</b-button
+          >
+          <b-button
+            v-if="!isMaybe && isRegistered"
+            type="button"
+            variant="primary"
+            class="ml-3"
+            v-on:click="setStatus()"
+            >Set Status Maybe</b-button
+          >
+          <b-button
+            v-if="!isConfirmed && isRegistered"
+            type="button"
+            variant="success"
+            class="ml-3"
+            v-on:click="setConfirm()"
+            >Set Status Confirmed</b-button
+          >
+          <b-button
+            v-if="isRegistered"
+            type="button"
+            variant="danger"
+            class="ml-3"
+            v-on:click="withdraw()"
+            >Withdraw From Event</b-button
+          >
+        </div>
         <div class="text-center">
           <div class="dropdown-divider"></div>
           <h4 :class="attendanceClass">Attendance</h4>
@@ -306,8 +340,10 @@
 
 <script>
 import HeaderComponent from "@/components/header/HeaderComponent.vue";
+import EventService from "./../utils/EventService";
 
 export default {
+  name: "SingleEvent",
   components: {
     HeaderComponent
   },
@@ -316,7 +352,8 @@ export default {
     return {
       fields: [
         {
-          key: "name",
+          key: "member.username",
+          label: "Member",
           sortable: true
         },
         {
@@ -328,13 +365,33 @@ export default {
       regimentCommand: [],
       hermes: [],
       hades: [],
-      ares: []
+      ares: [],
+      isRegistered: false,
+      isMaybe: false,
+      isConfirmed: false
     };
   },
+  watch: {},
   mounted() {
+    this.sockets.subscribe("event-change", e => {
+      this.$store.dispatch("setEvent", e.event);
+
+      switch (e.change) {
+        case "REGISTER":
+          this.getEventInfo();
+          break;
+        case "PATCH":
+          this.getEventInfo();
+          break;
+        default:
+          break;
+      }
+      // this.getEventInfo();
+    });
+  },
+  created() {
     this.getEventInfo();
   },
-  created() {},
   computed: {
     attendanceClass: function() {
       return {
@@ -343,26 +400,112 @@ export default {
     }
   },
   methods: {
+    registerForEvent() {
+      let register = {
+        id: this.$store.getters.getEventInfo._id,
+        user: this.$store.getters.getUserDiscordId
+      };
+
+      EventService.registerEvent(register);
+    },
+    setStatus() {
+      this.$store.getters.getEventInfo.members.forEach(u => {
+        if (u.member.discordId === this.$store.getters.getUserDiscordId) {
+          u.status = "Maybe";
+        }
+      });
+
+      // this.event.members = this.event.members.map(u => {
+      //   if (u.member.discordId === this.$store.getters.getUserDiscordId) {
+      //     u.status = "Maybe";
+      //     return u;
+      //   } else {
+      //     return u;
+      //   }
+      // });
+
+      EventService.updateStatus(this.$store.getters.getEventInfo);
+    },
+    setConfirm() {
+      this.$store.getters.getEventInfo.members.forEach(u => {
+        if (u.member.discordId === this.$store.getters.getUserDiscordId) {
+          u.status = "Confirmed";
+        }
+      });
+
+      // this.event.members = this.event.members.map(u => {
+      //   if (u.member.discordId === this.$store.getters.getUserDiscordId) {
+      //     u.status = "Confirmed";
+      //     return u;
+      //   } else {
+      //     return u;
+      //   }
+      // });
+
+      EventService.setConfirmed(this.$store.getters.getEventInfo);
+    },
+    withdraw() {
+      let e = this.$store.getters.getEventInfo;
+
+      this.isRegistered = false;
+      this.isMaybe = false;
+      this.isConfirmed = false;
+
+      e.members = e.members.filter(u => {
+        return u.member.discordId != this.$store.getters.getUserDiscordId;
+      });
+
+      EventService.withdraw(e);
+      this.$store.dispatch("setEvent", null);
+      this.$router.push("/events");
+    },
+    checkStatus() {
+      let e = this.$store.getters.getEventInfo;
+      e.members.forEach(u => {
+        if (u.member.discordId && u.status === "Registered") {
+          this.isRegistered = true;
+          this.isMaybe = false;
+          this.isConfirmed = false;
+        } else if (u.member.discordId && u.status === "Maybe") {
+          this.isRegistered = true;
+          this.isMaybe = true;
+          this.isConfirmed = false;
+        } else if (u.member.discordId && u.status === "Confirmed") {
+          this.isRegistered = true;
+          this.isMaybe = false;
+          this.isConfirmed = true;
+        } else {
+          this.isRegistered = false;
+          this.isMaybe = false;
+          this.isConfirmed = false;
+        }
+      });
+    },
     getEventInfo() {
       this.event = this.$store.getters.getEventInfo;
       this.filterMembers();
+      this.checkStatus();
     },
     filterMembers() {
-      this.regimentCommand = this.event.members.filter(member => {
-        return member.company === "Regiment Command";
-      });
-      this.ares = this.event.members.filter(member => {
-        return member.company === "Ares Company";
-      });
-      this.hades = this.event.members.filter(member => {
-        return member.company === "Hades Company";
-      });
-      this.hermes = this.event.members.filter(member => {
-        return member.company === "Hermes Company";
+      this.regimentCommand = [];
+      this.ares = [];
+      this.hades = [];
+      this.hermes = [];
+
+      let members = this.event.members;
+      members.forEach(u => {
+        if (u.member.roles.includes("Regiment Command")) {
+          this.regimentCommand.push(u);
+        } else if (u.member.roles.includes("Ares Company")) {
+          this.ares.push(u);
+        } else if (u.member.roles.includes("Hades Company")) {
+          this.hades.push(u);
+        } else if (u.member.roles.includes("Hermes Company")) {
+          this.hermes.push(u);
+        }
       });
     }
-  },
-  watch: {}
+  }
 };
 </script>
 

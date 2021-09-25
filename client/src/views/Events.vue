@@ -3,8 +3,10 @@ import "@fullcalendar/core/vdom"; // solves problem with Vite
 import FullCalendar from "@fullcalendar/vue";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import EventService from "./../utils/EventService";
 
 export default {
+  name: "events",
   components: {
     FullCalendar // make the <FullCalendar> tag available
   },
@@ -49,38 +51,15 @@ export default {
         height: 650,
         initialView: "dayGridMonth",
         eventClick: this.handleEventClicker,
-        events: [
-          {
-            title: "Logi Op",
-            date: "2021-09-18",
-            color: "#ff8d1a",
-            _id: 1234,
-            members: [
-              {
-                name: "Critinator",
-                status: "Registered",
-                company: "Hermes Company"
-              },
-              {
-                name: "Major General",
-                status: "Confirmed",
-                company: "Regiment Command"
-              },
-              {
-                name: "Tykan",
-                status: "Maybe",
-                company: "Regiment Command"
-              },
-              {
-                name: "FatedDoubloon",
-                status: "Maybe",
-                company: "Ares Company"
-              }
-            ]
-          }
-        ]
-      }
+        events: []
+      },
+      prevRoute: null
     };
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.prevRoute = from;
+    });
   },
   methods: {
     setModalEvent: function(event) {
@@ -101,11 +80,47 @@ export default {
         "mt-3": true,
         darkmode: this.$store.getters.getDarkMode ? true : false
       };
+    },
+    closeNewEventModal: function() {
+      this.$bvModal.hide("createEventModal");
+    },
+    onCreateEvent: function() {
+      let event = {
+        color: this.form.color,
+        date: this.form.date + " " + this.form.time,
+        title: this.form.title
+      };
+
+      // Send event to backend create event api
+      EventService.insertEvent(event);
+      this.$bvModal.hide("createEventModal");
+    },
+    async getAllEvents() {
+      // Retrieve all items
+      await EventService.getAllEvents().then(events => {
+        this.$store.dispatch("setEventsList", events);
+      });
     }
   },
   created() {
-    // let date = new Date();
-    // this.modalEvent.date = date;
+    this.getAllEvents();
+    this.calendarOptions.events = this.$store.getters.getEventsList;
+  },
+  mounted() {
+    this.getAllEvents();
+    // Subscribe to new events socket.io
+    this.sockets.subscribe("event-change", e => {
+      switch (e.change) {
+        case "POST":
+          // this.calendarOptions.events.push(e.event);
+          this.$store.dispatch("addEventToList", e.event);
+          this.calendarOptions.events = this.$store.getters.getEventsList;
+          break;
+        default:
+          break;
+      }
+      this.$forceUpdate();
+    });
   }
 };
 </script>
@@ -141,7 +156,7 @@ export default {
           title="Create New Event"
           hide-footer
         >
-          <!-- <b-form @submit="onSubmit" @reset="onReset" v-if="show"> -->
+          <!-- <b-form @submit="onCreateEvent"> -->
           <b-form>
             <b-form-group
               id="input-group-1"
@@ -190,8 +205,20 @@ export default {
               </b-form-checkbox-group>
             </b-form-group>
 
-            <b-button type="submit" variant="primary">Submit</b-button>
-            <b-button type="reset" variant="danger">Close</b-button>
+            <b-button
+              type="button"
+              v-on:click="onCreateEvent"
+              variant="primary"
+              class="mx-1"
+              >Submit</b-button
+            >
+            <b-button
+              type="reset"
+              v-on:click="closeNewEventModal"
+              variant="danger"
+              class="mx-1"
+              >Close</b-button
+            >
           </b-form>
         </b-modal>
       </div>

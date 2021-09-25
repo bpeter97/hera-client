@@ -139,14 +139,15 @@ export default {
       }
     },
     acceptRequest() {
-      // change status and logiStatus to accepted
-      (this.task.status = "Accepted"), (this.task.logiStatus = "Accepted");
+      this.task.status = "Accepted";
+      this.task.logiStatus = "Accepted";
+      this.assignSelf();
 
       TaskService.updateTask(this.task);
     },
     completeRequest() {
-      // change status and logiStatus to accepted
-      (this.task.status = "Completed"), (this.task.logiStatus = "Completed");
+      this.task.status = "Completed";
+      this.task.logiStatus = "Completed";
 
       TaskService.updateTask(this.task);
     },

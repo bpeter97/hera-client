@@ -40,10 +40,9 @@ export default {
           icon: "tasks"
         },
         {
-          label: "Factory Calculator",
-          url: "/calculator",
-          icon: "calculator",
-          disabled: true
+          label: "Events",
+          url: "/events",
+          icon: "calendar"
         }
       ]
     };

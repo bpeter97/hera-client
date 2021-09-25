@@ -1,4 +1,4 @@
-const ENV = "production";
+const ENV = "prod";
 
 const taskStatus = {
   PENDING: "Pending",

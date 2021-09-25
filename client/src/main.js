@@ -24,7 +24,8 @@ import {
   faCalculator,
   faExclamationTriangle,
   faSignOutAlt,
-  faHome
+  faHome,
+  faCalendar
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import CoolLightBox from "vue-cool-lightbox";
@@ -58,6 +59,7 @@ library.add(faBars);
 library.add(faTasks);
 library.add(faMap);
 library.add(faCalculator);
+library.add(faCalendar);
 library.add(faExclamationTriangle);
 library.add(faSignOutAlt);
 Vue.component("font-awesome-icon", FontAwesomeIcon);

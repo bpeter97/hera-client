@@ -70,6 +70,9 @@ export default new Vuex.Store({
     },
     toggleDarkmode: state => {
       state.darkmode = !state.darkmode;
+    },
+    addEventToList(state, event) {
+      state.events.list.push(event);
     }
   },
   actions: {
@@ -102,6 +105,9 @@ export default new Vuex.Store({
     },
     toggleDarkmode({ commit }) {
       commit("toggleDarkmode");
+    },
+    addEventToList({ commit }, data) {
+      commit("addEventToList", data);
     }
   },
   getters: {
@@ -141,6 +147,9 @@ export default new Vuex.Store({
     },
     getUserRoles: state => {
       return state.user.roles;
+    },
+    getUserDiscordId: state => {
+      return state.user.info.id;
     },
     getDarkMode: state => {
       return state.darkmode;
