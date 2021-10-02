@@ -81,7 +81,7 @@ export default {
       if (role === "Hermes Company") {
         this.isHermes = true;
       }
-      if (role === "Hermes Company Leadership" || role === "Regiment Command") {
+      if (role === "Hermes Company Leadership" || role === "Regiment Command" || role === "Hermes Company Command") {
         this.isLeadership = true;
         this.isHermes = true;
       }
